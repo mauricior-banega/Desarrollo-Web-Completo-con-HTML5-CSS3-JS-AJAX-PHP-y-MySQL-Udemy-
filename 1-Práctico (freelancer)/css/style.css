@@ -1,0 +1,486 @@
+/* 
+
+Aclaraciones CSS:
+
+1- Existe una manera en que no se necesario usar una calculadora de rem para ver cuantos px equivale, ya que sino usas esta configuracion los rems muchas veces dan equivalencias expresadas en decimales y no es facil de trabajar. Pero existe esta declaracion que dejaremos explicita en el practico para que 1rem sea = 10px, siempre sera *10 la quivalencia entre estos.
+
+La declaracion es: 
+
+html
+{
+    font-size: 62.5%;
+}
+
+body
+{
+    font-size: 16px;
+}
+
+2 - Especificidad en CSS: Que es? Es cuando podemos darle estilos mediante un selector a los elementos del HTML. Lo podemos hacer de distintas formas, sin embargo "tomará una", la que sea ultima (si entre ellas tienen la misma especificidad) pero si una es mas especifica (por ejemplo tiene definido directamente el nombre del 1º elemento + clase + 2º elemento si lo tuvira, y asi con todos sin dejar ninguno afuera) entonces tomará esa como orden a ejecutar, aunque haya otras.
+  - Pero para asegurarnos de que una declaracion sea tomada entre otras como principal, creamos el estilo del elemento pero le agregamos la sintaxis !important; asi no importará el orden ni si tiene definido o no todos los atributos que le den la especificidad.
+
+3 - "root": No esta especifica en el HTML pero existe. Estos elementos tacitos a la vista se los denomina "Custom Propieties". Lo usaremos para definir una paleta de colores desde alli, de raiz para todo el archivo. En el podemos declarar variables que definan un color en especifico. A esto se lo conoce como "variables de css".
+  - Pueden almacenarse en tralidad cualquier tipo de valores que deseemos para reutilizar en la hoja de estilos, ejemplificamos con una variable que aloja un tamaño "--fuente-principal:3.8rem" y que llamaremos mediante ej: 
+                                font-size:var(--fuente-principal);
+
+4 - Observacion: Para las fuentes que descargamos ej Google Fonts, podemos observar que descargan generalmente 2 anchos, en este caso para fuente 'Krub' y significa 400 para normal y 700 para bold. La conexion como sabemos esta en el HTML "index".
+
+    <link href="https://fonts.googleapis.com/css?family=Krub:400,700" rel="stylesheet">
+
+5 - MUY INTERESANTE: Dado que un elemento, ademas de su width/height que pemos definir un tamaño especifico, este aumentará si le añadimos padding/border o margin. Por ello es que en este enlace aparece un "Snipped" que podemos aplicar para poder sobrellevar ese problema de tamaños.
+
+    https://www.paulirish.com/2012/box-sizing-border-box-ftw/
+
+    Y es el sgte: 
+                            // apply a natural box layout model to all elements, but allowing components to change 
+                            
+                            html {
+                                box-sizing: border-box;
+                                }
+                                *, *:before, *:after {
+                                box-sizing: inherit;
+                                }
+    
+6 - Esa es la sentencia para agregar un fondo gradiente, elegimos la orientacion "top", el 1º color y el % con el que llegará a top, seguido del 2º color en % de comienzo (al 100% desde abajo).
+
+7- CSS MATIC : Es una web CSS que nos ayudará a crear el efecto que deseamos de los elementos arrojandonos el codigo de los efectos que elijamos, la web es: http://cssmatic.com
+
+8- Se explica: width:min(60rem, 100%); significa que el ancho será el minimo valor entre 60rem o 100% si la pantalla es de movil (osea sea ese 100% menor que 60rem). Supongamos que es un celular y su ancho es de 480px pero será su %100 entonces eligira ese, y no los 60rem. Osea se adaptará.
+
+9- Scroll Snap: Esta definicion se usa para hacer scroll en el documento; declarandolo en el CSS del html por ej (scroll-snap-type: y mandatory;) y que aplique esa propiedad de arriba hacia abajo. Luego declaramos a donde se va a detener aplicandolo en los sectores donde lo hará que sera en Servicios y Contanto en este caso, declarando en cada clase perteneciente la sgte declaración: 
+
+                        scroll-snap-align: center;
+                        scroll-snap-stop: always;
+    En este caso se declara "mandatory" y con poco scroll va hacia el sector, pero tambiene xiste "proximity", pero no esta bueno porque es necesario aplicar mas scrolleo para que cambie de sector.
+
+10- Ver en el index; en punto 7 que es importante "Como subir el archivo a la web" en este caso Netlify.
+
+*/
+
+:root /* 3 */
+{
+    --blanco: #ffffff;
+    --oscuro: #212121;
+    --primario: #ffc107; /* Se puede expresar en rgba o hsla o hexa */
+    --secundario: #0097a7;
+    --gris: #757575;
+    --fuente-principal:3.8rem;
+    --grisClaro:#DFE9F3;
+}
+
+html
+{
+    /* font-size: 62.5%; */
+    box-sizing: border-box;
+    min-height: 100%;
+    scroll-snap-type: y mandatory;
+}
+
+*, *:before, *:after { /* 5 */
+    box-sizing: inherit;
+  }
+
+body
+{   
+    font-size: 16px;
+    font-family: 'Krub', sans-serif;
+
+    /* Gradiente (6)*/
+    background-image: linear-gradient(to top, var(--grisClaro) 0%, var(--blanco) 100%);
+}
+
+p {
+    line-height: 2;
+}
+
+/* 1 */
+
+h1
+{
+    /* font-size: var(--fuente-principal); /* = a 38px */
+    font-size: 1.4rem;
+}
+
+h1 span {
+    font-size: 1.4rem;
+}
+
+h2
+{
+    font-size: 2.4rem;
+}
+
+h3 {
+    color: var(--secundario);
+    font-weight: 400;
+    font-size: 1.6rem;
+}
+
+h1,h2,h3
+{
+    text-align: center;
+}
+
+/* .titulo - Comentamos esta parte ya que al text-align: center la aplicamos en h1,h2,h3{}.
+{    text-align: center;
+    /*color: var(--primario); (3) } 
+*/
+
+/* .titulo span NO ESTA EN EL VIDEO DEL PRÁCTICO
+{
+    font-size: 2rem;
+} */
+
+
+.contenedor
+{
+    max-width: 120rem;
+
+    /* Podemos darle margen expresando codificando las 4 direcciones o mediante la sentencia que dejaremos, en donde en una podremos las 4 para (top/right/bottom/left). Asi no ahorramos lineas de codigo.
+
+    margin-top: 0;
+    margin-right: auto;
+    margin-bottom: 0;
+    margin-left: auto;
+
+    */
+
+    margin: 0 auto 0 auto; /* Asi o aun mas pequeño el codig; margin: 0 auto; e iterpretará que 0 es para arriba-abajo y derecha-izquierda. */
+
+
+}
+
+.sombra
+{
+ -webkit-box-shadow: 0px 5px 15px 0px rgba(112,112,112,0.48);
+    -moz-box-shadow: 0px 5px 15px 0px rgba(112,112,112,0.48);
+         box-shadow: 0px 5px 15px 0px rgba(112,112,112,0.48);
+         background-color: var(--blanco);
+         padding: 2rem;
+         border-radius: 1rem;
+         margin-bottom: 3rem;
+    
+}
+
+.w-sm-100
+{
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .w-sm-100{width: auto;}
+}
+
+.flex
+{
+ display: flex;
+}
+
+.alinear-derecha
+{
+    justify-content: flex-end;
+}
+
+.nav-bg
+{
+    background-color: var(--secundario);
+}
+
+.navegacion-principal {
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@media (min-width:768px) {
+    .navegacion-principal {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+
+@media (min-width: 480px) {
+    .navegacion-principal
+    {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+
+.navegacion-principal a
+{   
+    padding: 1rem 2rem;
+   color:var(--blanco);
+   text-decoration: none;
+   font-size: 1.4rem;
+   font-weight: 700;
+}
+
+.navegacion-principal a:hover
+{
+   background-color: var(--primario);
+   color: var(--oscuro);
+}
+
+.navegacion-principal a:last-of-type {
+    margin-bottom:0;
+}
+@media (min-width:768px) {
+    .navegacion-principal a{
+        margin-bottom: 0;
+    }
+}
+
+.hero
+{
+    background-image: url(../img/hero.jpg);
+    background-repeat: no-repeat; /* Para que la imagen no se repita */
+    background-size: cover; /* Para que la imagen ocupe todo el ancho */
+    height: 450px;
+    position: relative; /* 6 */
+
+    margin-bottom: 2rem;
+}
+
+.contenido-hero
+{
+    position: absolute; /* 6 */
+    background-color: rgba(0, 0, 0, 0.5); /* Sintaxis Anterior */
+    background-color: rgb(0 0 0 /70%); /* Sintaxis Nueva */
+    width: 100%;
+    height: 100%;
+
+    /* Para hacer la imagen mas oscura añadimos color oscuro con transparencia y a width/height le damos el %100 como vemos, pero tambien podriamos haberle dado las coordenadas para top/bottom/left/right, pero de la otra forma es mas corto la sintaxis. Esa transparencia la podemos aplicar dandole el color negro+alpha, pero es la sintaxis anterior, ahora podemos aplicar la sintaxis nueva que dejaremos.*/
+
+    display: flex; /* Centrar horizonal y verticalmente todo un elemento:
+    Debe aplicarse toda esta declaracion de display/flex-direction/align-items/justify-content. Hay muchas otras formas de hacerlo, peroe sta es una de las mas sencillas. */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.contenido-hero h2, .contenido-hero p
+{
+    color: var(--blanco);
+}
+
+.boton {
+    background-color: var(--secundario);
+    color: var(--blanco);
+    margin-top: .5rem;
+    padding: .5rem 3rem;
+    border-radius: 5px;
+    font-weight: 700;/* bold */
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    border:none;
+    border-radius: .5rem;
+    width: 90%; /* Ocupará siempre ese porcentaje saldo para dispositivos con mas de 768px. Y para menos tomará como dijimos 90%. */
+    text-align: center;
+
+}
+
+@media (min-width: 768px) {
+    .boton
+    {
+        width:auto;
+    }
+}
+
+.boton:hover{
+    cursor: pointer; /* Añade la mano de cursor */
+}
+
+
+.servicios
+{
+
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+
+}
+
+@media (min-width:768px) {
+    .servicios {
+        display: grid;
+
+        /* Ejemplo: Asi es la forma mas larga, debajo y asi queda la mas corta que es igual
+     grid-template-columns: 300px 300px;
+    grid-template-rows: 200px 900px; 
+
+    grid:200px 800px / 300px 300px;
+    */
+
+
+
+    /*Otra forma de crear columnas y filas para un grid es la sgte:*/
+
+    /*grid-template-columns: 1fr 1fr 1fr; o grid-template-columns: 33.3% 33.3% 33.3%;*/
+
+    /*"fr"=fraccion; de un todo, en este caso son 3 fracciones, un 33.3% de cada columna. Si queremos que la 2da tenga un 50% será 1fr 1fr 2fr. */
+
+
+    /*Esta es otra forma de expresar el de arriba,  */
+
+    /* grid-template-columns: (3, 1fr);
+    column-gap: 1rem;  Vendria a ser el padding de grid
+    
+        -Dejaremos a como está en el video
+    */
+
+        grid-template-columns: 33.3% 33.3% 33.3%;
+        column-gap: 1rem;
+    }
+}
+
+.servicio {
+    text-align:center;
+}
+.servicio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* .servicio h3 NO ESTA EN EL PRACTICO DEL VIDEO
+{
+    color: var(--secundario);
+    font-weight: normal;
+}
+
+.servicio p
+{
+    line-height: 2;
+    text-align: center;
+} */
+
+
+.servicio .iconos
+{
+    height: 15rem;
+    width: 15rem;
+    background-color: var(--primario);
+    border-radius: 50%; /*Asi hacemos el circulo*/
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+}
+
+.iconos i {
+    font-size: 2rem;
+    color: var(--oscuro);
+}
+
+/*Contacto*/
+.formulario {
+    background-color: var(--gris);
+    width: min(60rem, 100%); /* 8 */
+    margin: 0 auto;
+    padding: 2rem;
+    border-radius: 10px;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+}
+
+.formulario fieldset
+{
+    border: none;
+}
+
+.formulario legend {
+    text-align: center;
+    font-size: 1.8rem;
+    color: var(--primario);
+    margin-bottom: 2rem;
+    display: block;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+@media (min-width:768px) {
+    .formulario {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+}
+
+.contenedor-campos {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+}
+@media (min-width:768px) {
+    .contenedor-campos {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* 50% 50% */
+        grid-template-rows: auto auto 20rem;
+        column-gap: 1rem;
+    }
+}
+.campo:nth-child(3) /* Si tenemos 3 clases que se llaman igual, para elegir el 3º */
+{
+    grid-column: 1 / 3;
+}
+
+.campo:nth-child(4) /* Si tenemos 3 clases que se llaman igual, para elegir el 3º */
+{
+    grid-column: 1 / 3;
+}
+
+
+.campo {
+    margin-bottom: 1rem;
+    width: 100%;
+}
+@media (min-width:480px) {
+    .campo {
+        display: flex;
+        align-items: center;
+    }
+}
+@media (min-width: 768px) {
+    .campo{
+        flex: 0 0 calc(50% - .5rem)
+    }
+}
+.campo label {
+    color: var(--blanco);
+    font-weight: 700;
+    margin-bottom: .5rem;
+    display: block;
+}
+@media (min-width:480px) {
+    .campo label {
+        flex: 0 0 90px;
+    }
+}
+
+.campo input[type="text"],
+.campo input[type="tel"],
+.campo input[type="mail"],
+.campo textarea {
+    width: 100%;
+    padding: .5rem;
+    border: none;
+    border-radius: .5rem;
+}
+@media (min-width: 768px) {
+    :is(.campo) :is( 
+        input[type="text"], 
+        input[type="text"],  
+        input[type="tel"],  
+        input[type="mail"] , 
+        textarea ) {
+        flex: 1;
+    }
+}
+
+
+footer
+{text-align: center;}
+
