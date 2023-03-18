@@ -1,0 +1,76 @@
+html {
+    box-sizing: border-box;
+    font-size: 62.5%;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+body {
+    font-family: 'Raleway', sans-serif;
+    font-size: 1.6rem;
+}
+
+img {
+    max-width: 100%;
+}
+
+h1 {
+    font-size: 4rem;
+}
+
+.contenedor {
+    max-width: 1200px;
+    width: 95%;
+    margin: 0 auto;
+}
+
+.entrada-blog a {
+    display: inline-block;
+    background-color: #2196F3;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/** CODIGO AQUI **/
+
+/* Al igual que con grid, con flex para trabajar con elementos deberemos de hacerlo con un elemento padre de esos, por ello creamos "dos-columnas" 
+
+De arranque, flexbox ya es distinto a grid porque por defecto organiza los elementos de izquierda a derecha.
+*/
+
+@media (min-width: 768px) { /* Pantalla PC o más */
+    .dos-columnas
+    {
+        display: flex;
+        justify-content: space-between; /* Desplaza los elementos cada uno a los extremos del contenedor */
+
+        /* gap: 2rem; No funciona en Safari */
+
+    }
+
+    /* Entonces ahora aplicamos propiedades a los elementos hijos "entrada-blog"*/
+
+    .entrada-blog
+    {
+        /* flex-basis  o: flex (solo) + sentencia (factor de crecimiento + factor reduccion + factor base (que es el que queda visible) que sera: calc(50% - 1rem) )*/
+
+        /* flex: 0 0 calc(50% - 1rem); */
+
+        flex: calc(50% - 1rem);
+
+    }
+}
+
+/* 
+  Aclaracion 1º: Podemos ahorrarnos codigo no declarando .entrada-blog. Y poniendo gap: 2rem; en .dos-columnas pero sucede que en todos los navegadoires se verá bien a excepcion de Safari. Es una codificacion que funciona pero no con un rendimiento optimo o total, mientras que la que está si.
+
+  Aclaracion 2º: Si quisieramos trabajar con 2 o mas columnas que no sean iguales deberemos de cambiar las bases.
+  
+*/
