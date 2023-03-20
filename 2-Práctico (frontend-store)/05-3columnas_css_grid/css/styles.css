@@ -1,0 +1,85 @@
+html {
+    box-sizing: border-box;
+    font-size: 62.5%;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+body {
+    font-family: 'Raleway', sans-serif;
+    font-size: 1.6rem;
+    line-height: 2;
+}
+
+img {
+    max-width: 100%;
+}
+
+h1 {
+    font-size: 4rem;
+}
+
+h2 {
+    font-size: 3.2rem;
+}
+
+.contenedor {
+    max-width: 1200px;
+    width: 95%;
+    margin: 0 auto;
+}
+
+p {
+    font-size: 2rem;
+}
+
+.entrada-blog a {
+    display: inline-block;
+    background-color: #2196F3;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+
+/** CODIGO AQUI **/
+
+@media (min-width: 768px)   {
+    .contenedor-grid
+    {
+        display: grid;
+        grid-template-areas: "izquierda contenido derecha";
+        grid-template-columns: 20% 60% 20%; /* O 1fr 3fr 1fr */
+        grid-auto-flow: column; /* IMPORTANTE */
+        column-gap: 2rem;
+    }
+}
+
+.contenido-principal
+{
+    grid-area: contenido;
+    /* grid-column: 2/3; */
+}
+
+.sidebar-1
+{   
+    grid-area: izquierda;
+    /* grid-column: 1/2; */
+}
+
+/* 
+Cuando le damos posicion a las columnas "grid-column" para que queden organizadas, por defecto grid corre las mismas una linea debajo, porque lo acomoda automaticamente. Pero para evitar esto, se codifica en el contenedor que aloja a todas estas ".contenedor-grid" grid-auto-flow: column;
+
+Sino no, no quedará el efecto que se quiere realizar y se bajaran las columnas una linea.
+*/
+/* Podemos trabajar con nº aplicados en los grid-columns para definir la posicion o sino un "grid-areas". Donde 1º damos posicion izquierda, 2º central, 3º derecha, esto en el .contenedor-grid. 
+
+Luego en cada clase de columnas, que hay definidas 2 (porque 3º su ibucacion es por defecto, la ultima). Indicamos mediante grid-area la posicion que ocupará segun lo declarado.
+Comentamos lo declarado en valores de nº para indicar el ejemplo explicado. 
+*/
