@@ -1,0 +1,79 @@
+html {
+    box-sizing: border-box;
+    font-size: 62.5%;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+body {
+    font-family: 'Raleway', sans-serif;
+    font-size: 1.6rem;
+    line-height: 2;
+}
+
+img {
+    max-width: 100%;
+}
+
+h1 {
+    font-size: 4rem;
+}
+
+h2 {
+    font-size: 3.2rem;
+}
+
+p {
+    font-size: 2rem;
+}
+
+.contenedor {
+    max-width: 1200px;
+    width: 95%;
+    margin: 0 auto;
+}
+
+.entrada-blog a {
+    display: inline-block;
+    background-color: #2196F3;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+
+/** CODIGO AQUI **/
+
+@media (min-width: 768px) {
+    .con-sidebar
+    {
+        display: flex;
+        /* justify-content: space-between; */
+        /* Podemos quitar el space-between porque dando los otrosd valores ya creará la separacion correctamente. */
+        gap: 2rem;
+    }
+
+    aside 
+    {
+        flex:1; /* (1) */
+    }
+
+    article 
+    {
+        flex:3; /* (1) */
+    }
+    
+}
+
+/* (1) Flex: Factor de crecimiento.
+-En el diseño, tenemos un div que contiene todos los elementos que es el .con-sidebar. Si Inspeccionamos, veremos que mide 1200px en total. Pero podemos indicarle que cada elemento que contiene, tenga un factor incremental inicial equivalente. Explicamos.
+-Como vemos en ambos elementos tenemos la sentencia flex: 1 o 3 respectivamente, y esto se hace para indicarle al navegador que cada 1px que tenga de tamaño el aside el article tenga 3px más al crearse en el navegador.
+-De esta forma damos tamaño asi como hicimos con grid en las columnas (grid-template-columns: 3fr 1fr;) algo similar es esto. Para que apartir de uno, el otro tenga 3 veces mas ese valor hasta llegar a los 1200px que es el total del tamaño.
+
+*/
