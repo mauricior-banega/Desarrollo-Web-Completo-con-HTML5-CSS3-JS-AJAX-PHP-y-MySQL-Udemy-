@@ -1,0 +1,121 @@
+html {
+    box-sizing: border-box;
+    font-size: 62.5%;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+body {
+    font-family: 'Raleway', sans-serif;
+    font-size: 1.6rem;
+    line-height: 2;
+}
+
+img {
+    max-width: 100%;
+}
+
+h1 {
+    font-size: 4rem;
+}
+
+h2 {
+    font-size: 3.2rem;
+}
+
+p {
+    font-size: 2rem;
+}
+
+.contenedor {
+    max-width: 1200px;
+    width: 95%;
+    margin: 0 auto;
+}
+
+.entrada-blog a {
+    display: inline-block;
+    background-color: #2196F3;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+
+/** CODIGO AQUI **/
+
+@media (min-width: 768px) {
+    .layout-shifter
+    {
+        display: grid;
+        grid-template-areas: "contenido"
+                             "inferior"; /* Recordamos: Son contenedores */
+        /* (1) */
+    }
+
+    .sidebar
+    {
+        grid-area: inferior;
+    }
+
+    .contenido-principal
+    {
+        grid-area:contenido;
+        display: grid;
+
+        /* Crearemos de esa misma columna, otras 2 para luego ser distribuidas en areas tambien. */
+
+        grid-template-areas: "entrada1 entrada2" ;
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 3rem;
+    }
+
+    /* .entrada-blog
+    {
+        grid-area: entrada1;
+    } */
+}
+
+@media (min-width: 992px) {
+    .layout-shifter
+    {
+        
+        grid-template-areas: "contenido sidebar"; /* (1) */
+        column-gap: 2rem;
+    }
+
+    .sidebar
+    {
+        grid-area: sidebar;
+    }
+
+    .contenido-principal
+    {
+        grid-area: contenido;
+
+        grid-template-areas: "entrada1" 
+                             "entrada2";
+
+        /* Si queremos quitar las columnas aplicamos la sgte sentencia que anula lo declarado en .contenido-principal ->  
+                    grid-template-columns: repeat(2, 1fr);
+
+         */
+
+         grid-template-columns: unset;
+
+    }
+}
+
+/* 
+    (1) Aclaracion respecto a  grid-template-areas:
+
+-Cuando indicamos areas cuando ponemos en diferentes comillas es para indicar diferentes filas.
+-Cuando ponemos areas separadas dentro de las mismas comillas es para indicar diferentes columnas.
+
+*/
