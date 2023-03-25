@@ -29,9 +29,31 @@
 -->
 
 <!-- 
-    Aclaraciones: 
-    1 - 
-   
+    Aclaraciones: Performance de nuestro sitio web
+
+    1 - (LOADING LAZY) loading="lazy": Mediante esta sentencia indicamos al navegador que una vez llegado hasta ese elemento, recien ahi lo descargue. Si vemos en el Ispector de elementos en Firefox Developer, en Red, veremos que a medida que scrolleamos recien ahi va descargando la imagen a medida que se va visualizando. Puede ser especificado dentro de sentencias de "img" e incluso "source" de la etiqueta "picture" que explicamos mas adelante para la carga de imágenes webp.
+
+    2 - (PRELOAD) rel="preload": Esta sentencia aplica una preparacion previa y de primer orden en cuanto a la ejecucion del archivo. Es decir prepara esto primero antes que todo lo demas, a la hora de abrir/ejecutarlo.
+        -Para realizar un preload de un enlace o CDN realizamos la misma sentencia pero le angregamos as="font" (si es una fuente, en este caso si), y crossorigin="crossorigin", de otra manera lo va a funcionar un preload en un enlace. Mas abajo vemos como se crea para una imagen. Podemos aplicar esta sentencia a todos los elementos que deseemos que su carga sea primordial.
+
+    3 - (PREFETCH) Esta sentencia sirve para "cargar" la siguiente pagina que se espera que el usuario visite, para darle una mayor experiencia al usuario y sea mas rapido. La sentencia es silimar a preload, pasamos en el rel="prefetch" + un as="document" (hace referencia a un archivo HTML).
+        -Esta herramienta sirve para indicar cual será la pagina mas visitada de las 3 creadas por ejemplo en este práctico. Sinó sabemos cual de esas sea, existe una herramienta que es "Google Analitics" donde nos muestra cual es la pagina HTML que los usuarios visitan más.
+
+    4 - Imágenes WEBP: Es un tipo de imagen mas liviano, popr ejemplo en el del practico el peso es del jpg:115KB y webp:44kb. Pero porque no usamos puro webp? Esto es porque no todos los navegadores lo soportan.
+        -Para poder hacer uso de este, debemos crear una etiqueta de apertura y cierre <picture>, esta permite la carga y desicion entre las opciones que tenga el navegador de ejecutar una imagen por ejemplo. Dentro de esta creamos otra llamada <source> de solo apertura, donde alli pasamos los paramentros de nuestra imagen webp, indicando "srcset" la ruta del archivo y "type" donde pasamos que tipo de imagen es, por ejemplo "image/webp".
+        -Dentro de "picture" podremos tambien la etiqueta de siempre img que contiene la imagen jpg tambien, para que como dijimos el navegador DECIDA en medida que pueda o no, ejecutar uno u otro, poniendo como 1º el de tipo webp que es el primero en la lista de ejecución.
+        -Tambien puede recibir "loading lazy" en su sentencia.
+
+    5 - MODERNIZER: Es una librería JavaScript que nos permite conocer la compatibilidad del navegador con tecnologías HTML5 y CSS3, lo que nos permitirá desarrollar sitios web que se adapten a las capacidades cada navegador. La web es: https://modernizr.com/.
+        -Para ejecutarla vamos a la web, clickeamos en "Add your detect". Luego buscamos el la lupa "webp", tocamos en + y en Build. Nos aparecerá un recuadro donde en la primera opcion nos permitirá copiar el codigo JS. Y lo pegaremos en el archivo llamado "mornizer.js" que creamos en la carpeta "js".
+        -Como a todos los JS de un archivo, creamos el script luego del cierre del footer. Derá de aplicarse a todas los HTML del proyecto, si usamos imagenes webp para cada una de ellas.
+        -Explicamos que modernizer nos permite desde "CSS" poder elegir si ejecutar una imagen webp o no, dependiendo del navegador. Entonces por ejemplo, para el header de nuestro pyoyecto aplicamos las sentencias que estan explicitas en el codigo para hacer ese "if o eleccion que desde CSS"  por "decirlo asi, que desde CSS no se puede realizar, que decidirá si ejecutar una opcion o la otra.
+
+    6 - Podemos poner una etiqueta meta mas, que de una descripcion de lo que trata la pagina, esto sirve para darle mas sentido a la web con respecto a buscadores por ejemplo Google.
+    7 - Deployment: Subir la pagina aun servidor
+            -Basicamente tenemos muchos servidores a donde poder hacerlo incluso pagar por un dominio que deseemos, pero en este caso volveremos a utilizar como en los otros prácticos Netlify para subir gratuitamente el proyecto terminado. Ellos asignan un dominio de ellos, que podemos editar tambien y que es gratuito.
+    8 - Ligthhouse: Auditar nuestro sitio web en cuanto a su performance.
+            -Es una extencion de Chrome que podemos bajar y que analiza el codigo aplicado en nuestro proyecto dandonos en porcentaje que tan bueno fue realizada la codificacion en cuanto a factores de sentencias, rendimiento, compatibilidad, SEO, buenas ptracticas, accesibiliadad, entre otros.
  -->
 
  <!DOCTYPE html>
@@ -40,20 +62,23 @@
      <meta charset="UTF-8">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <title>BlogDeCafé</title>
-     <meta name="description" content="Página web de blog de café">
+     <meta name="description" content="Página web de blog de café"> <!-- (6) -->
  
-     <!-- Prefetch -->
+     <!-- Prefetch (3)-->
      <link rel="prefetch" href="nosotros.html" as="document">
  
-     <!-- Preload -->
+     <!-- Preload (2)-->
      <link rel="preload" href="css/normalize.css" as="style">
      <link rel="stylesheet" href="css/normalize.css">
  
      <link rel="preload" href="https://fonts.googleapis.com/css2?family=Open+Sans&family=PT+Sans:wght@400;700&display=swap"  crossorigin="crossorigin" as="font">
+
      <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
      
      <link rel="preload" href="css/style.css" as="style">
      <link rel="stylesheet" href="css/style.css">
+
+     <link rel="preload" href="img/blog1.jpg" as="image">
  </head>
  <body>
  
@@ -86,6 +111,7 @@
              <article class="entrada">
                  <div class="entrada__imagen">
                      <picture>
+                         <!-- (1) --> <!-- (4) -->
                          <source loading="lazy"  srcset="img/blog1.webp" type="image/webp">
                          <img loading="lazy" src="img/blog1.jpg" alt="imagen blog"> 
                      </picture>
@@ -140,7 +166,7 @@
                      <p class="widget-curso__label">Cupo: 
                          <span class="widget-curso__info">20</span>
                      </p>
-                     <a href="entrada.html" class="boton boton--secundario">Más Información sobre nuestros cursos</a>
+                     <a href="entrada.html" class="boton boton--secundario">Más Información</a>
                  </li>
  
                  <li class="widget-curso">
@@ -151,7 +177,7 @@
                      <p class="widget-curso__label">Cupo: 
                          <span class="widget-curso__info">20</span>
                      </p>
-                     <a href="entrada.html" class="boton boton--secundario">Más Información sobre nuestros cursos</a>
+                     <a href="entrada.html" class="boton boton--secundario">Más Información</a>
                  </li>
              </ul>
          </aside>
@@ -173,6 +199,6 @@
          </div>
      </footer>
      
-     <script src="js/modernizr.js"></script>
+     <script src="js/modernizr.js"></script> <!-- (5) -->
  </body>
  </html>

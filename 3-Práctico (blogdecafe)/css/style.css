@@ -27,9 +27,13 @@ body {
 
 /** Globales **/
 .contenedor {
+
     /* max-width: 120rem; */
-    width: min(90%, 120rem);
+    /* width: 90%; */
+    width: min(90%, 120rem); /* Sentencia acortada, explicamos debajo. */
     margin: 0 auto;
+
+    /* En esta sentencia usamos dos valores que indican valores de width o ancho, que tendrá el contenedor,. Tomará el valor que sea menor segun el dispositivo que lo este ejecutando. Suponiendo que es de una PC y es de + de 1200px y este valor es menor a su 90%, entonces tomara el 120rem. Ahora si es un movil por ej y 120rem es mayor que el 90% del tamaño del navegador entonces tomara los 90% para ser vuslaizado. */
 }
 a {
     text-decoration: none;
@@ -65,15 +69,14 @@ img {
 }
 
 /** Header **/
-/* .webp .header {
+
+/* (5): Explicacion en index de estas 2 sentencias del header: .webp/.no-webp */
+ .webp .header {
     background-image: url(../img/banner.webp);
 }
 .no-webp .header {
     background-image: url(../img/banner.jpg);
-} */
-
-
-/* (*)-La imagen no se cargaba, pero si la coloco acá si. Modifico en medida que avancen los videos. */
+} 
 
 .header {
     background-image: url(../img/banner.jpg);/* (*) */
@@ -159,7 +162,7 @@ img {
 @media (min-width: 768px) {
     .boton {
         display: inline-block;
-
+        /* Para pantallas grandes, para mostrar el boton a este le aplicamos "inline block", explicamos. Inline permite usar el espacio disponible, pero no admite si le añadimos margenes o cambios en el ancho (width), cosa que si tenemos que añadir. Por ello usamos este complemento + block que tiene la misma propiedad pero si añade las propiedades antes excluidas. Aclaro, que si quisieramos poner mas elementos a la derecha no se podrá, ya que es una propiedad de "inline block" propia. */
     }
 }
 .boton:hover {
@@ -268,3 +271,6 @@ img {
 .campo__field--textarea {
     height: 20rem;
 }
+
+/* Entrada Blog: No es necesario aplicar ninguna propiedad; para dispositivos grandes ni pequeños, es responsiva y adecuada con la creacion sin edicion CSS.*/
+
