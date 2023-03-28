@@ -1,6 +1,6 @@
 /* Funciones en JavaScript */
 
-// Declaración de Función
+// Formato: Declaración de Función
 sumar();
 function sumar() {
     console.log(10 + 10);
@@ -8,7 +8,7 @@ function sumar() {
 
 
 
-// Expresión de la función
+// Formato: Expresión de la función
 sumar2();
 const sumar2 = function() {
     console.log( 3 + 3);
