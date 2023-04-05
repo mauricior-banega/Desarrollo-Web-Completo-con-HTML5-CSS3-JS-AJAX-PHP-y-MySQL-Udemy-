@@ -188,12 +188,156 @@ console.log('scrolling...');
 
 /* -------------------------------------------------------------------
 
-XXXXX
--
+Seleccionar elementos y asociarles un evento
+
+-Veremos como seleccionar un boton, pasarle el evento "click" y ejecutar una funcion que muestre en consola la accion.- Sucede que cuando ejecutamos ese mensaje sucede muy rapido y no llegamos a leer y es porque el boton esta dentro de un formulario y al dar click y "enviarse" lo que normalmente sucede cuando llenamos uno con datos de la persona, se envia rapido y durante un segundo veremos el efecto de la consola indicando 'Enviando formulario' que es el tiempo que dura.
+-Para que podamos ver el efecto, pasamos una variable en la funcion, de la que usaremos para varias cosas, llamada de varias formas (e/event/evento, etc), ese evento puede usarse siempre que usemos metodos "addEventListener". Con esa variable podremos detener el envio de ese formulario pudiendov er el mensaje que entregara la consola; pero ademas lo usaremos para ver toda la informacion que ese evento trae consigo como las coordenadas x e y donde se clickeo, nombre del boton etc. Eso lo vemos desplegando el triagulo en el inspector sobre el evento "Mouse Event".
+*/
+
+const btnEnviar = document.querySelector('.boton--primario');
+
+/* btnEnviar.addEventListener('click', function(evento)
+{
+    console.log(evento);
+    evento.preventDefault(); 
+
+    console.log('Enviando formulario');
+}); */
+
+
+
+/* -------------------------------------------------------------------
+
+Evento de los Inputs y Textarea
+
+-Veremos como ejecutar la funcion de mostrar por consola cuando se esta "escribiendo" dentro de un input/textarea. Podemos usar 'change' que se ejecutara cuando "hallamos terminado de escribir" y toquemos por fuera del input o textarea. Pero si queremos que ejecute cada vez que se introduce una letra usamos 'input' que será mas eficiente.
+
+-Como en el evento anterior, si pasamos e en la funcion y lo cargamos en un consol para mostrarlo, veremos todos los elementos de el por consola. Explica como ver lo que el cliente escribe, se accede mediante e.target.VALUE (para extraer el valor de ese campo).
+-Luego para poder hacer los mismo con los imputs de email y mensaje haremos lo mismo con el ID correspondiente de cada uno, para reutilizar codigo crearemos en vez de la variable "e", una llamada "leerTexto" que realiza la operacion de enviar por consola y que compartan todos. Pero supongamos que queramos ver los valores que contiene el evento, esa "e" si la podemos definir dentro de la funcion de leerTexto, como sabemos siempre que usemos addEventListener podremos definir una variable para extraer los datos.
+
+-Por ultimo, creamos un objeto llamado datos que alojará los valores (nombre/email/mensaje) se carguen en cada input. Esto es muy util para utilizar formularios. Para que funcione los valores/llaves del objeto deben tener el mismo nombre que los ID de los inputs.
+
+Evento de Submit
+
+-En un formulario hay que usar "submit" porque usamos la clase .formulario para poder ejecutar el evento. A diferencia del anterior que usabamos una clase de un boton, al que escuchamos mediante el evento "click", pero que es de tipo "submit" tambien pero es un elemento distinto pero al que podemos pasar un click hasta a un texto. Pero no asi a un formulario.
+
+Para interpretar mejor y adminsitrar las sentencias ubicaremos los las lineas de esta explicacion en conjunto con las del evento "Inputs y Textarea".
+
 
 */
 
+// Eventos con Click y submit...
+
+// const btnEnviar = document.querySelector('.formulario input[type=submit]');
+// console.log(btnEnviar);
+
+// btnEnviar.addEventListener('click', function() { // callback o closure 
+//     console.log('click');
+// });
+
+const datos = {
+    nombre: '',
+    email: '',
+    mensaje: ''
+}
+
+// submit
+const formulario = document.querySelector('.formulario');
+
+formulario.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    console.log(e);
+
+    console.log('Di click y la página ya no recarga');
+
+    console.log(datos);
+
+    // Validar el Formulario...
+
+    const { nombre, email, mensaje } = datos;
+
+    if(nombre === '' || email === '' || mensaje === '' ) {
+        console.log('Al menos un campo esta vacio');
+        mostrarAlerta('Todos los campos son obligatorios', true);//Pasamos 2º argumento "true" para la funcion mostrarAlerta
+        return; // Detiene la ejecución de esta función
+    }
+
+    console.log('Todo bien...')
+
+    mostrarAlerta('Mensaje enviado correctamente');
+    /* Para esta no pasamos 2º argumento ya que sino esta definido (como para el otro es si y es true) entonces tomará el valor del paramentro definido como error=null (valor por default asignado) que estará en la funcion mostrarAlerta. */
+});
+
+//Crearemos una sola funcion que mostrará los mensajes (Refactoring de Código). Eliminaremos las lineas repetidas y en donde sea distinto aplicaremos metodos para que opte dinamicamente. Aplicaremos refactoring para mostrarError & mostrarMensaje creando una llamada mostrarAlerta.
+
+function mostrarAlerta(mensaje, error = null) {
+    const alerta = document.createElement('p');
+    alerta.textContent = mensaje;
+
+//Pero las clases que definen son distintas entonces creamos un if para que elija un camiono u otro, ademas de pasar el valor true como paramentro de error.
+
+    if(error)
+    {alerta.classList.add('error');}
+    else
+    {alerta.classList.add('correcto');}
+
+    formulario.appendChild(alerta);
+
+    setTimeout(() => {
+        alerta.remove();
+    }, 3000);
+}
 
 
-//Veremos 
+
+/* function mostrarError(mensaje) {
+    const alerta = document.createElement('p');
+    alerta.textContent = mensaje;
+    alerta.classList.add('error');
+
+    formulario.appendChild(alerta);
+
+    setTimeout(() => {
+        alerta.remove();
+    }, 3000);
+}
+
+function mostrarMensaje(mensaje) {
+    const alerta = document.createElement('p');
+    alerta.textContent = mensaje;
+    alerta.classList.add('correcto');
+    formulario.appendChild(alerta);
+
+    setTimeout(() => {
+        alerta.remove();
+    }, 3000);
+}
+ */
+
+// Eventos de los Inputs...
+const nombre = document.querySelector('#nombre');
+const email = document.querySelector('#email');
+const mensaje = document.querySelector('#mensaje');
+
+
+nombre.addEventListener('input', leerTexto);
+email.addEventListener('input', leerTexto);
+mensaje.addEventListener('input', leerTexto);
+
+function leerTexto(e) {
+    // console.log(e);
+    // console.log(e.target.value);
+
+    datos[e.target.id] = e.target.value;
+
+    console.log(datos);
+}
+
+
+
+
+
+
+
 

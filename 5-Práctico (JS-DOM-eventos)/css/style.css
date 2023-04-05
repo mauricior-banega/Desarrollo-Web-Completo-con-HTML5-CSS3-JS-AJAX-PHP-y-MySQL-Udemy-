@@ -228,7 +228,7 @@ img {
 
 /** Contacto **/
 
-.error {
+.error { /* Esta seccion de error se aplica cuando insertamos la clase error al formulario desde JS */
     background-color: rgb(185, 0, 0);
     text-align: center;
     padding: 1rem;
