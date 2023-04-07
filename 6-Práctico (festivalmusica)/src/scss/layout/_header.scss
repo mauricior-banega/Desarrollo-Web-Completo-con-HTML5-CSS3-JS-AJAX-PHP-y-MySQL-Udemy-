@@ -1,0 +1,65 @@
+
+.header{
+
+    background-color: $verde;
+
+    .contenido-header
+    {
+        padding: $separacion/2 0; //$separacion de valor 5rem al dividir quedará en 2.5rem. Trabajamos de esta manera ya que es facil de manipular la variable y ajustarla segun queramos en vez de definir varias variables de separacion por cada valor.
+
+        /* display: flex;
+        justify-content: space-between;
+        align-items: center; */
+
+        //Insertamos el mixing para el MQ
+        //@include telefono;
+
+        @include tablet
+        {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+    }
+
+    //Para no generar un anidamiento de 3 niveles porque puede prestar a confusiones, como h1 es hijo de "header" tambien, no solo de "contenido-header", lo podremos dentro de "header" unicamente.
+
+    h1
+    {
+       color: $blanco;
+       margin-bottom: 1rem ;
+       text-align: center; 
+    //   @include nuevoMixin(uppercase, 3rem); //Explicación en archivo "mixing.scss".
+       @include tablet
+       {
+        margin-bottom: 0; 
+       }
+    }
+}
+
+
+
+
+//Con esta clase sucede lo mismo, pertenece a "header" pero para que no tengamos tantos niveles lo ubicaremos por debajo, aparte del header.
+.navegacion-principal
+{
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+
+    //@include telefono{display: none;}
+
+    a {
+        color: $blanco;
+        font-size: 2rem;
+
+    //    @include nuevoMixin(lowercase, 2rem);
+
+        &:hover //El &(Ampersand) permite que no repitamos un elemento selector. Refiere siempre al elemento padre, como una copia de el y aplica la propiedad definida para el.
+        {
+            color: $amarillo;
+        }
+      }
+    
+}

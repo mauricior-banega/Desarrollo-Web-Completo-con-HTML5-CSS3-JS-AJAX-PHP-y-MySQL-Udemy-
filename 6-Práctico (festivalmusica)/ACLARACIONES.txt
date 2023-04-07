@@ -1,0 +1,18 @@
+-Basicamente me encontre con el problema de que no ejecutaba el script de Gulp desde Visual Studio Code, mandaba por ejemplo gulp -v (para que me muestre la varsion) y daba error en el script con respecto a Microsoft. Busque en Youtube y aqui en 2º paso (cambiando los valores del registro de Windows) PUDO FUNCIONAR.
+-Este es el enlace: ehttps://www.youtube.com/watch?v=gm0gexHWDy0
+-Tambien lo dejare descargado en la carpeta del proyecto "Visual studio code - la ejecución de scripts está deshabilitada en este sistema - Power Shell".
+
+-Por otro lado, para enviar los sripts desde Terminal es necesario hacer click derecho en la carpeta del proyecto y elegir "Abrir en terminal integrado" y no desde Terminal porque la ruta es la de Estudios y no la del pryecto en si.
+
+-Otro error que surge es: 
+    Error: Cannot find module 'sass'
+Y no deja que funcione, para ello ejecutamos estas dos lineas desde la Terminal: 
+    npm cache clear --force
+    npm install sass
+Y comenzará a funcionar correctamente.
+
+
+
+
+
+

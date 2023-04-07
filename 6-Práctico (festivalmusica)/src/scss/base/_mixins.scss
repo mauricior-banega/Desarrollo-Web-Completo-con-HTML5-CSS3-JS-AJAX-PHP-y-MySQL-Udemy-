@@ -1,0 +1,46 @@
+/* -Es una especie de "funcion" exlusiva de SASS (no existe en CSS nativo), y permite añadir multiples instrucciones y ejecutarlas; se pueden añadir paramentros (), si fuera necesario, o solo tener corchetes. */
+
+/* - Ejemplo básico de funcionamiento de un Mixing
+
+@mixin nuevoMixin($transform, $size)
+{
+    font-size: $size;
+    color: $morado;
+    text-transform: $transform;
+}
+
+  -Ahora aplicaremos esto para crear los Media Queries, ya que como explicamos no puede codificarse dentro del elemento que se desea aplicar. Haremos para que se adapte a cada dispositivo que lo ejecute.
+*/
+
+@mixin telefono
+{
+    @media (min-width: $telefono)
+    {
+        /* display: flex;
+        justify-content: space-between;
+        align-items: center; */
+
+        @content;
+
+        //Explicamos: @content (Directivas): Sirve para traer las propiedades o contenidos definidos dentro de un bloque mixing definido en algun archivo .scss pero que esta definido de forma que pueda usarse de forma variable/dinamica con valores que puedan diferir segun se requiera; pero que NO se define en esta misma sentencia. 
+        //Como en este ejemplo tenemos este mixing tenemos un MQ y dentro no hay mas que un @content que traera si valores declarados en este caso en diferentes clases que lo requieran, en el archivo (_header.scss).
+
+        //Creamos variables tambien de los px que tendra el MQ y usaremos para cada caso. Las definiremos en (variables.scss).
+    }
+}
+
+@mixin tablet 
+{
+    @media (min-width: $tablet)
+    {
+        @content;
+    }
+}
+
+@mixin desktop
+{
+    @media (min-width: $desktop)
+    {
+        @content;
+    }
+}
