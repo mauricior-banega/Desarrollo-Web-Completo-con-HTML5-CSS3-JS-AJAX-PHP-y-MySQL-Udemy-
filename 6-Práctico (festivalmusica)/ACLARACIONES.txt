@@ -15,6 +15,7 @@ Errores Solucionados en GITHUB.
 Errores no Solucionados
 -GULP IMAGEMIN: No funciona la sentencia indicada en el video para versiones 8.0.0 en adelante, la solucion encontrada es degradar la version a anteriores pero incluso aplicar eso en mi practico, los errores continuan. Por ello es que esa tarea la dejaré como esta.
 
+-Por ultimo, para subir la pagina a Netlify me daba error la pagina, solamente cargando la carpeta build/index.html y videos. Pero si funcionó cuando guarde una copia de esas carpetas en una nueva que cree (deployment) y la subi. Indico por si vuelve en otros prácticos a dar error al intentar subir archivos sueltos y no en una misma carpeta.
 
 
 
