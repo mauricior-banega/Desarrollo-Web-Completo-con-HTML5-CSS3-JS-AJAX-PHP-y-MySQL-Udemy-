@@ -1,0 +1,74 @@
+.boletos
+{
+    padding: $separacion ;
+
+    h3{
+        text-align: center;
+        color: $blanco;
+
+    }
+
+    .contenedor-boletos
+    {   margin-top: calc($separacion / 2);
+        @include grid(2, $separacion);
+    }
+
+    .plan{
+
+        p{
+            color: $blanco;
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 2rem;
+
+        }
+    }
+}
+
+.pase {
+
+    width: 100%; //Las tablas no toman por defecto el 100% del ancho disponible, asique se lo asignamos para que aplique los efectos en las etiquetes que le pertenecen.
+
+    border-spacing: 0; //Esto elimina el espacio entre las filas de la tabla. Y no mediante border:none en el td de tbody.
+
+    thead{
+
+        background-color: $rosa;
+
+        th{
+            padding: calc($separacion/4);
+            color: $blanco;
+            text-transform: uppercase;
+        }
+    }
+
+    tbody{
+        background-color: $blanco;
+
+        td {
+            padding: calc($separacion/4);
+            border-bottom: 1px solid #e1e1e1;
+        }
+
+        tr{
+            &:last-of-type {
+                td {
+                    border: none;
+                }
+                
+            }
+        }
+    }
+
+    tfoot{
+
+        background-color: $morado;
+
+        td {
+            padding: calc($separacion/4);
+            font-size: 3rem;
+            text-align: center;
+            color: $blanco;
+        }
+    }
+}

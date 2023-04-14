@@ -1,0 +1,71 @@
+/* Aclaraciones:
+1-Gradiente: Antes usabamos algo como añadir una imagen con cierto degradado y la superponiamos sobre la imagen o video para lograr el efecto. Hoy eso no se usa ya que con CSS podemos obtener el efecto.
+ -Basicamente añadiendo al background "linear-gradient" y pasando el sentido del gradiente con "to" + ubicacion (top/button/right/left) + colores, logramos el efecto. Y en los colores podemos añadir los % de cada uno.
+ -Si quisieramos darle sentido oblicuo o en algun angulo especifico reemplazamos el (to + ubicacion) por el gradoº. Ej: 45deg.
+
+ -Por ultimo; si quieres lograr un efecto mas complejo y visible antes de aplicarlo en el CSS podemos usar paginas alternativas como (colorzilla.com) para elegir colores y efectos de gradientes y pegarlos en nuestro proyecto.
+ -Aspectos de uso: Veremos flechas arriba y abajo, en los extremos y al medio. Para crear la del proyecto, las flechas del medio que son 2, las arrastramos fuera para quitarlas. Nos quedamos con la de los extremos, en la flecha de abajo elegimos el color, y en la de arriba la opacidad/transparencia. Por ultimo, tocamos de nuevo al medio para agregar un color mas.
+ Por ultimo le damos la orientacion, en este caso "diagonal derecha".
+
+ 2- z-index: Posiciona la hoja o el orden en el que se muestre en pantalla. Aclaracion del practico; del titulo veremos que si queremos seleccionar el texto no lo permite, eso es porque la clave .overlay esta por delante de .contenido-video (que tiene el titulo), osea esta es hija de overlay que es quien tiene a su vez el video y el gradiente. Entonces para que el titulo quede delante tenemos que definir: position:relative + z-index: (Indicando la posicion), en este caso le damos 1. Es como la posicion de un objeto en una hoja de Canva.
+
+*/
+
+.video
+{
+    position: relative;
+    max-height: 70rem;
+    overflow: hidden;
+
+    .overlay
+    {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        //background: linear-gradient(to top, $rosa 50%, $amarillo); /* 1 */
+
+
+        /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#891c1e+0,9e37f2+67,ffffff+100&0.8+1,0.5+100 */
+        background: -moz-linear-gradient(-45deg,  rgba(137,28,30,0.8) 0%, rgba(137,28,33,0.8) 1%, rgba(158,55,242,0.6) 67%, rgba(255,255,255,0.5) 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(-45deg,  rgba(137,28,30,0.8) 0%,rgba(137,28,33,0.8) 1%,rgba(158,55,242,0.6) 67%,rgba(255,255,255,0.5) 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(135deg,  rgba(137,28,30,0.8) 0%,rgba(137,28,33,0.8) 1%,rgba(158,55,242,0.6) 67%,rgba(255,255,255,0.5) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cc891c1e', endColorstr='#80ffffff',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+    }
+
+    video
+    {
+      display: block;  
+
+      width: 100%;
+
+    }
+}
+
+.contenido-video //Quitamos del anidamiento (.video .overlay .contenido-video)
+{
+    display: flex;
+    align-items: center;
+    height: 100%;
+
+    /* 2 */
+    position: relative;
+    z-index: 1;
+
+    h2
+    {
+        display: flex;
+        flex-direction:column;
+        color: $blanco;
+        font-size: 7rem;
+        align-items: flex-start;
+
+        span
+        {
+            background-color: $rosa;
+            font-size: 2rem;
+            padding: 1rem 2rem;
+            
+        }
+    }
+}

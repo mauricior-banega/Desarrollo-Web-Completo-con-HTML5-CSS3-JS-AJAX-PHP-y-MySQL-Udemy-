@@ -5,7 +5,7 @@
 
     .contenido-header
     {
-        padding: $separacion/2 0; //$separacion de valor 5rem al dividir quedará en 2.5rem. Trabajamos de esta manera ya que es facil de manipular la variable y ajustarla segun queramos en vez de definir varias variables de separacion por cada valor.
+        padding: calc($separacion / 2) 0; //$separacion de valor 5rem al dividir quedará en 2.5rem. Trabajamos de esta manera ya que es facil de manipular la variable y ajustarla segun queramos en vez de definir varias variables de separacion por cada valor.
 
         /* display: flex;
         justify-content: space-between;
@@ -35,6 +35,12 @@
        {
         margin-bottom: 0; 
        }
+    }
+
+    &.fijo{
+        position:fixed;
+        width: 100%;
+        box-shadow: 0 .3rem .4rem #444;
     }
 }
 

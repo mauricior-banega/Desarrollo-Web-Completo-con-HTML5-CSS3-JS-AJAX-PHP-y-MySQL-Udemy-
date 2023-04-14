@@ -13,6 +13,10 @@ body
 {
     font-family: $fuentePrincipal ;
     font-size: 1.6rem;
+
+    &.fijar-body{   //Haremos que no se pueda scrollear una vez abierto la imagen grande.
+        overflow: hidden;
+    }
 }
 
 p{
