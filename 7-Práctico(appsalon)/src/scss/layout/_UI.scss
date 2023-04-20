@@ -1,0 +1,46 @@
+/* 
+-Aclaracion: Tanto elementos como "html" y "body" si Inspeccionamos veremos que se resalta en azul solo esa seccion, pero si le ponemos un bk de algun color toma todo el ancho y alto. Ahora si suponemos tenemos un solo div de clase X, reseltará en azul solo la parte del div y no tomo el ancho/alto, incluso si le ponemos un bk. 
+-Entonces como hacemos para que un div tome todo el alto del documento? poniendo "heigth: 100vh" y si fuera el ancho "width:100vh". No funcionará o osea no será lo mismo sentenciando; heigth:100%.
+*/
+
+body{
+    background-color: $negro;
+}
+
+.contenedor-estetica{
+    
+    @include tablet{
+        height: 100vh;
+        @include grid(2, calc($separacion/2));
+    }
+
+    
+    .imagen{
+        height: 30rem;
+        background-image: url(../../src/img/1.jpg);
+        background-size: cover;
+        background-position: center center;
+
+        @include tablet{
+            height: auto; //Sino aplicamos esto,que formatea el ancho, sigue tomando los 30rem del tamaño de mq small.
+        }
+    }
+}
+
+.app {
+    width: 95%;
+    margin: 0 auto;
+    padding-top: calc($separacion/2);
+
+    .seccion {
+        display: none;
+        margin-top: calc($separacion/2);
+        /* &:first-of-type {
+            display: block;
+        } */
+    }
+}
+
+.mostrar-seccion {
+    display: block!important;
+}

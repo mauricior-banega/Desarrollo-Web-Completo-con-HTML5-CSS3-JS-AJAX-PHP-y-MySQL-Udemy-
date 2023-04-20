@@ -1,0 +1,30 @@
+function horaCita() {
+    const horaInput = document.querySelector('#hora');
+
+    horaInput.addEventListener('input', e => {
+
+        const horaTexto = e.target.value; 
+        
+        //console.log(nombreTexto);
+        //console.log('Escribiendo');
+        //console.log(e.target.value); -Sabremos que es lo que el usuario esta escribiendo.
+
+        //Validacion de que nombre texto debe tener algo
+        if( nombreTexto === '' || nombreTexto.length < 3 ) {
+            
+            mostrarAlerta('Nombre no valido','error');
+            //console.log('Nombre no valido');
+
+        } else {
+            
+            const alerta = document.querySelector('alerta');
+            if(alerta) {
+                alerta.remove();
+            }
+
+             cita.nombre = nombreTexto;
+            //console.log('Nombre valido');
+            console.log(cita);
+        }
+    });
+}

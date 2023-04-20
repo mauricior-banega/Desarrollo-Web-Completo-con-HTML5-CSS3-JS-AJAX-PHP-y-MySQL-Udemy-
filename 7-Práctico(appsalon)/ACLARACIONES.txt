@@ -1,0 +1,30 @@
+-En cada práctico dejaremos constancia de los errores ocurridos en cuanto a utilizar node y gulp en este paso.
+
+1-El primer error es como en varios prácticos, descomprimir el zip del práctico. Sucede que hay que cambiar permisis de Internet que se aplicaron pero seguia sin funcionar. Solucion: Parcialmente tuve que descomprimir en escritorio el zip y cortar la carpeta que contenia el práctico y pegarla por ultimo donde alojo este.
+
+2-Por consiguiente dio error en maximo de caracteres (logitud maxima), por ello tuve que acortar un poco el nombre y anduvo.
+
+3-Al abrir la terminal ya para enviar el comando "npm install" y de esta manera se instalen las dependencias sucede que da error en muchas y hace que no se cree "node_modules" ni "build" etc. Osea no ejecute las dependencias y esto se debe, sacando desde la web la solucion, a que muchas de estas estan desactualizadas. Por ello dejare la fuente donde explica como actualizarlas.
+
+https://ed.team/blog/evita-errores-actualizando-tus-dependencias-de-npm
+
+-Y resumiendo indica ejecutar comando de actualizacion de estas dependencias (explicacion+pasos): 
+
+Es tan sencillo como editar el archivo package.json y escribir las versiones actualizadas de cada dependencia. Obviamente, es muy tedioso y te va a tomar mucho tiempo. Así que mejor, abre la terminal y escribe:
+
+npm i -g npm-check-updates
+Con eso instalarás globalmente el paquete npm-check-updates que leerá tu archivo package.json comparará las versiones con los repositorios de npm y te indicará qué paquetes deben ser actualizados. Una vez instalado, puedes hacer lo siguiente:
+
+npm-check-updates -u
+O en su versión corta
+
+ncu -u
+
+Lo que actualizará las versiones de las dependencias en tu archivo package.json. Ahora solo ejecuta npm install sin problemas.
+
+4-Tener en cuenta algo muy importante, cuando abrimos un práctico este tiene ya un nombre declarado e instalaciones ya realziadas. Sucederá que cuando enviemos el comando "npm i o install" creará todo pero con el nombre creado por el que hizo el curso y que será diferente al nuestro y dará error en todas las instalaciones practicamente. Ademas como lo explicado arriba, puede que estas dependencias no esten actualizadas. Entonces tendra que ser cambiado el "name" que será en este caso (7-Práctico(appsalon) en package.json & package-lock.json. Y no el que estaba que era "practico sass salon" o algo asi.
+
+5-Tambien dio error al ejecutar gulp, indicaba que faltaba sass (No se puede encontrar el módulo 'sass' o Error: Cannot find module 'sass'). Se solucionó mediante la instalacion global o de desarrollo: 
+
+npm i -g sass (globalmente)
+npm i sass --save-dev (local o en zona)

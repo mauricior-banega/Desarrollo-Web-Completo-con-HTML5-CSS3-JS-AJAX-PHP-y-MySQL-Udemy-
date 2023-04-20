@@ -1,0 +1,120 @@
+<!--
+   23-Desarrollo Web Completo con HTML5, CSS3, JS AJAX PHP y MySQL (Udemy) 
+   
+   Temas:
+   13. APPSalon - Creando un Proyecto con SASS, HTML y JavaScript - Nivel Intermedio
+
+        1. El Proyecto Finalizado
+        2. Comenzando este proyecto (descarga materiales aqui)
+        3. Creando los contenedores principales
+        4. Creando la navegación
+        5. Ocultando las secciones para navegar en ellas
+        6. Consultar los servicios con Fetch API
+        7. Creando el HTML de los servicios
+        8. SASS a los servicios
+        9. Seleccionar Servicios
+        10. Trabajando con la navegación por Tabs
+        11. Trabajando con la Paginación
+        12. Mostrar  Ocultar la paginacíon de forma condicional
+        13. Creando el Formulario de la Cita
+        14. SASS al formulario
+        15. Validar que la cita tenga toda la información
+        16. Agregar  Eliminar Servicios
+        17. Validar el Nombre
+        18. Mostrar una alerta cuando el nombre no es válido
+        19. Como validar las fechas
+        20. Deshabilitar Fechas
+        21. Primeros pasos con el Resumen
+        22. Validar las horas
+        23. Mostrando el Resumen
+        24. Mostrar la cantidad a pagar
+-->
+
+<!-- 
+Aclaraciones: 
+
+1-Entidades (entities): Son simbos en HTML que podemos sentenciar mediante simbolos y palabras que describan el mismo. En el práctico usamos &laquo/&raquo (que son flechas) pero hay muchas otras que ppdemos buscar. En Google mediante HTML ENTITIES y en dev.w3.org encontraremos todas ellas con el codigo que las crea en HTML.
+
+2-El archivo "servicios.json", archivo JS donde se crea un objeto "servicios", que tienen distintos atributos para cada persona/cliente, fue creado para simular una dbo en nuestra pagina.
+
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Salón de Belleza</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;700;900&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="build/css/app.css">
+</head>
+<body>
+
+    <div class="contenedor-estetica">
+        <div class="imagen"></div>
+        <div class="app">
+            <header class="header">
+                <h1>App Peluqueria</h1>
+            </header>
+            <nav class="tabs">
+                <button type="button" data-paso="1">Servicios</button>
+                <button type="button" data-paso="2">Información Cliente</button>
+                <button type="button" data-paso="3">Resumen</button>
+            </nav>
+
+            <!-- Inicia todo el contenido App -->
+
+            <!-- 1º Sección -->
+            <div id="paso-1" class="seccion">
+                <h2>Servicios</h2>
+                <p class="text-center">Elige tus Servicios a Continuación</p>
+                
+                <!-- En este div crearemos el HTML con el listado de los servicios, generado en JS (app.js). Se insertaran mediante el id:servicios. -->
+
+                <div id="servicios" class="listado-servicios"></div>
+
+            </div>
+
+            <div id="paso-2" class="seccion">
+                <h2>Tus Datos y Cita</h2>
+                <p class="text-center">Coloca tus datos y fecha de tu cita</p>
+
+                <form class="formulario">
+
+                    <div class="campo">
+                        <label for="nombre">Nombre</label>
+                        <input id="nombre" type="text" placeholder="Tu Nombre">
+                    </div>
+
+                    <div class="campo">
+                        <label for="fecha">Fecha</label>
+                        <input id="fecha" type="date" >
+                    </div>
+
+                    <div class="campo">
+                        <label for="hora">Hora</label>
+                        <input id="hora" type="time">
+                    </div>
+
+                </form>
+            </div>
+            <div id="paso-3" class="seccion contenido-resumen">
+                <h2>Resumen</h2>
+            </div>
+
+            <div class="paginacion"> <!-- Paginación -->
+                <!-- &laquo/&raquo: Se llaman entidades(simbolos de flecha izq/der). Ver aclaraciones-->
+                <button id="anterior">
+                    &laquo; Anterior 
+                </button>
+                <button id="siguiente">
+                    Siguiente &raquo;
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="build/js/bundle.min.js"></script>
+</body>
+</html>

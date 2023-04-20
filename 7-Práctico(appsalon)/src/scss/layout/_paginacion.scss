@@ -1,0 +1,31 @@
+
+.paginacion {
+
+    display: flex;
+    justify-content: space-between;
+    margin-top: $separacion;
+
+    button {
+        background-color: $azul;
+        padding: 1rem 3rem;
+        display: block;
+        text-align: center;
+        color: $blanco;
+        border:none;
+        font-weight: $bold;
+        text-transform: uppercase;
+        font-size: 2rem;
+
+        &.ocultar {
+
+            /* display: none; 
+            -De esta manera se oculta el boton anterior pero genera una mala experiencia para el usuario. Dado que none oculta pero al hacer desaparecer el boton anterior, siguiente ocupara su lugar y no quedará del lado derecho como se espera que suceda. Entonces usamos visibility:hidden; esta sentencia oculta pero mantiene las posiciones de los elementos aunque estos esten ocultos/no se vean en la pagina. */
+
+            visibility: hidden;
+        }
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}

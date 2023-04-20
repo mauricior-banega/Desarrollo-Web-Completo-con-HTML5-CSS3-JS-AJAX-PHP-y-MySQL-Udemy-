@@ -1,0 +1,44 @@
+.formulario {
+    width: 100%;
+
+}
+
+.campo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+
+    label {
+        flex: 0 0 10rem; //ó flex-basis: 10rem; (Factor de crecimento). Es la cantidad de pixeles que se le va a dar al elemento.
+
+        //Factor de crecimiento: Recordamos; por cada pixel que se le da a uno el otro recibo lo mismo, si es 1 o el doble si fuese 2.
+
+        color: $blanco;
+    } 
+
+    input { 
+
+        flex: 1;
+
+        //Si quisieramos seleccionar uno de los 3 tipos de "inputs" en particular sentenciamos input[type="text"]{}por ej. Pero como lo aplicaremos a los 3 lo mismo dejamos como está.
+
+        padding: calc($separacion/4);
+        border-radius: 1rem;
+        border: none;
+    }
+
+
+}
+
+.alerta {
+
+    padding: calc($separacion/2);
+    text-align: center;
+    color: $blanco;
+    width: 100%;
+    display: block;
+
+    &.error {
+        background-color: rgb(194, 0, 0);
+    }
+}
