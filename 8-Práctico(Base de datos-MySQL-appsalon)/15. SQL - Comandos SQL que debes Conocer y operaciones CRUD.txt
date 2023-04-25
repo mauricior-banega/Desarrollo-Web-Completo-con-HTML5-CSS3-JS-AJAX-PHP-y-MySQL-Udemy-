@@ -1,0 +1,540 @@
+15. SQL - Comandos SQL que debes Conocer y operaciones CRUD
+
+ACLARACIONES: Aqui realizaremos todo lo que aplicaremos para realizar el curso. Complemento del block (14. Introducción a Bases de Datos).
+
+-------------------------------------------------------------
+INSTRUCCIONES (para iniciar MySQL y para trabajar en la dbo):
+
+-Ejecutamos en PowerShell: mysql -u root -p 
+
+ATENCION: DÁ ERROR (Explico)
+-Sucede que Windows no conoce la ruta desde donde se esta llamando a mysql como se ve arriba. Y para hacerlo debemos de especificar la ruta hasta bin donde se instalo pero es mucho trabajo tener que hacerlo cada vez.
+-Para ello crearemos una ruta hacia el bin de MySQL (C:\Program Files\MySQL\MySQL Server 5.7\bin) para que al ejecutar el comando lo reconozca. Esto lo solucione viendo el video de ruta: https://www.youtube.com/watch?v=WzBHaNFEags (iTec School). Basicamente lo que hace es añadir una Variable de entorno nueva. En Path da dobleclick y toca en Nueva y ahi especifica la ruta y da Aceptar a todo y listo.
+-Luego da el error final, si ejecutamos mysql -u root -p no alcanzará. Deberemos en este caso como cambiamos el puerto por defecto que era 3306 a 3308. Deberemos de especificarlo al realizar la conexion (mysql -u root -p --port 3308) y luego si podremos trabajar libremente. 
+
+Ruta de la solucion: https://linuxhint.com/error-2003-cant-connect-mysql-server-localhost/
+
+-Ahora si, ejecutando todo lo otro si mandamos la sentencia (SHOW DATABASES;) nos mostrará las 4 dbo que hay por default en un cuadrado de titulo: Database
+
+-Creamos base de datos:
+mysql> CREATE DATABASE appsalon;
+Query OK, 1 row affected (0.03 sec)
+
+-Si ejecutamos nuevamente SHOW DATABASES; veremos que ya aparece la dbo "appsalon".
+
+-Prepararemos la dbo app salon para usarla:
+mysql> USE appsalon;
+Database changed
+
+-Si escribimos SHOW TABLES; veremos que dice Empty set (0.00 sec). Ahi esta indicando que no tiene ninguna tabla creada.
+
+-Entonces creamos una tabla llamada "servicios" en la dbo de appsalon donde crearemos pasando todas las sentencias:
+
+-----------------------------------------------------
+(CRUD: C) - Create
+-----------------------------------------------------
+CREATE TABLE servicios (
+    -> id INT(11) NOT NULL AUTO_INCREMENT,
+    -> nombre VARCHAR(60) NOT NULL,
+    -> precio DECIMAL(6,2) NOT NULL,
+    -> PRIMARY KEY (id)
+    -> );
+Query OK, 0 rows affected (0.59 sec)
+-Recordamos que para escribir eso debemos de poner siempre al final el (;) sino el ENTER lo unico que hará es bajar renglones unicamente. Ora cosa importante, es que los nº dentro de los paréntesis indican el nº de cifras que tendrá el numero o la palabra (letras) que podrá tener como maximo.
+
+-Si ejecutamos SHOW TABLES; nos aparecerán los servicios en un cuadrado que pertenece a la dbo appsalon.
+-Otra forma de ver lo que contiene la tabla de forma mas amplia es escribiendo DESCRIBE servicios; y nos mostrará todas las columnas creadas de nuestra tabla.
+
+-Explicacion teorica de CRUD(Crear(create),Leer(read),Actualizar(update) y Eliminar(delete)), que aplicaremos a nuestra dbo.
+
+-Aplicaremos valores a la tabla creada "servicios" mediante INSERT. 
+INSERT INTO servicios (nombre,precio) VALUES ("Corte de Cabello de Adulto",80);
+INSERT INTO servicios (nombre,precio) VALUES ("Corte de Cabello Niño",60);
+
+-Luego inserta 2 valores en la misma declaracion. Esto se obtiene mediante la siguiente sintaxis:
+INSERT INTO servicios (nombre,precio) VALUES 
+("Peinado Mujer",80),
+("Peinado Hombre",60);
+
+-----------------------------------------------------
+(CRUD: R) - Read
+-----------------------------------------------------
+-Aplicaremos como leer (la R del CRUD), es decir ver los valores ingresados/cargados en la tabla servicios.El * indica que seleccione "todos". Aparecerá un cuadro donde muestra los valores de id/nombre/precio.
+
+SELECT * FROM servicios;
+
+-Indica que no es muy optimo mostrar "todos" mediante asterisco ya que si la dbo tuviese millones de registros esto seria muy dificil de manejar. Tambien podemos especificar uno de los valores de servicios de la tabla, lo haremos con "nombre".
+
+SELECT nombre FROM servicios;
+
+-Y para traer 2 campos de servicios ej: nombre/precio es asi:
+
+SELECT nombre,precio FROM servicios;
+
+(ORDENANDO CONSULTAS)
+-Vemos como podemos traer los campos ysus valores contenidos pero podemos ordenarlos segun algun criterio en especifico. Ej, ordenaremos indicando que "precio" sea el campo a ordenar, mostrando de igual manera id/nombre/precio agregando ORDER BY que por defecto es en sentido ASC (ascendente o de menor a mayor), pero podemos ponerlo DESC que es descendente. Lo aplicamos en precio pero tambien se puede aplicar a cualquier campo de la tabla.
+
+SELECT id,nombre,precio FROM servicios ORDER BY precio DESC;
+
+-Podemos indicar que la cantidad de consultas a mostrar, osea que no traiga todas sino 2 por ejemplo:
+
+SELECT id,nombre,precio FROM servicios LIMIT 2;
+
+-Y si quisieramos traer por ejemplo el id 4 y 5 unicamente, es como dejaremos abajo. Vemos como podemos ir mezclando los diferentes comandos de SQL.
+
+SELECT id,nombre,precio FROM servicios ORDER BY id DESC LIMIT 2;
+
+-Para buscar y traer el resultado de los valores cargados en base a un dato en especifico se especifica WHERE más el nombre del campo y su valor especifico. Si buscamos un valor de 100 que no existe, dirá (Empty set).
+SELECT id,nombre,precio FROM servicios WHERE id=3;
+
+-----------------------------------------------------
+(CRUD: U) - Update
+-----------------------------------------------------
+-Aplicaremos esto de actualizar osea cambiar valores cargados de los campos que cargamos. Se realiza mediante la sentencia UPDATE, el nombre de la tabla, SET más campo y valor actualizado y por ultimo WHERE más el ID perteneciente. No especificar el ID puede causar muchos problemas a la hora de gestionar la dbo, por lo que siempre deberemos de especificar el WHERE+ID tanto en updates como deletes que veremos mas adelante.
+
+UPDATE servicios SET precio = 70 WHERE id=2;
+
+-Para ver que esta actualizado volvemos a ejecutar la consulta
+SELECT * FROM servicios;
+
+-Haremos lo mismo con el campo nombre del id nº 2, añadiremos actualizado al nombre para ejemplificar.
+
+UPDATE servicios SET nombre="Corte de Cabello Niño Actualizado" WHERE id=2;
+
+-Comprobamos cambios: SELECT * FROM servicios;
+
+-Tambien podemos mandar a actualizar mas de una a la vez es decir cambiaremos el nombre y precio de uno de los valores cargados en el campo que será el de id=1; de la sgte forma:
+
+UPDATE servicios SET nombre="Corte de Cabello Adulto Actualizado", precio="120" WHERE id=1;
+
+-----------------------------------------------------
+(CRUD: D) - Delete
+-----------------------------------------------------
+-Para eliminar un registro en especifico se realiza mediante DELETE FROM, más tabla, el WHERE (sino se elimina todo) y por ultimo el id, que será en este caso el nº 3. Aclaramos que cuando se eliminan registros de la dbo y como sabemos cada uno tiene un id designado, los otros valores que carguemos no reemplazaran a los que fueron eliminados, en nuestro caso borramos el id=3 y nos quedó el id 1,2,4 y 5. Si creamos uno nuevo este no será id 3 porque este disponible, sino que se le asignara el 6. Y asi con todos los valores cargados nuevos y los registros que se eliminen respectivamente.
+
+-Esto sucede ya que si asi ocurriera la dbo si tuviera millones de datos cargados y tuviera que buscar en el registro los id vaciones o sin uso para ser reutilizado este demoraria y se perderia la optimizacion de la herramienta.
+
+DELETE FROM servicios WHERE id=3;
+
+-----------------------------------------------------
+
+(MODIFICAR TABLA EXISTENTE)
+-Para volver a ver la tabla enviamos: DESCRIBE servicios;
+-Agregaremos ahora si un campo nuevo a la tabla "servicios" que se llamará "descripcion", se declara mediante "ALTER TABLE & ADD" y los valores respectivos. Si consultamos nuevamente la tabla podremos ver que claramente aparecera el campo nuevo "descripcion" pero sin valores dentro.
+
+ALTER TABLE servicios ADD descripcion VARCHAR(100) NOT NULL;
+
+-Consultamos la tabla para ver el campo nuevo y apreciar como esta sin valores cargados: SELECT * FROM servicios;
+
+-Como realizar un cambio de nombre de un campo especifico, por ejemplo cambiaremos el nombre "descripcion" a "nuevonombre", se declara mediante "ALTER TABLE & CHANGE" y los valores respectivos de la tabla anterior, la nueva y el tipo de darto. 
+-Cabe destacar que no le podremos cambiar el tipo de dato, osea si era VARCHAR en este casi no podremos hacerlo INT o DECIMAL etc. Si podemos modificar el valor de ese tipo de dato osea si era VARCHAR 100 podremos cambiarlo a 50 o 200 etc, al que queramos asignarle, en este caso 11. Se realiza asi:
+
+ALTER TABLE servicios CHANGE descripcion nuevonombre VARCHAR(11) NOT NULL;
+
+(ACLARACION ÚTIL): Si presionamos la flecha hacia arriba del teclado en PowerShell nos aparecerá la ultima sentencia ejecutada) y si seguimos presionando nos mostrará uno a uno "en orden" todas las instrucciones que ejecutadas. Es muy util a la hora de utilizar los comandos de SQL mas rapida.
+
+-Retomando, veremos el cambio de nombre del campo verificandolo mediante: DESCRIBE servicios;
+
+-Ahora relizaremos un INSERT nuevo para agregar otro valor de servicio, y podremos ver que el campo creado "nuevonombre" tendrá el valor "Hola" ya que es el unico que lo tendrá definido. Que sucede si regresamos osea revertimos el cambio de nombre, es decir de "nuevonombre" a "descripcion" nuevamente. Podremos observar que el valor cargado allí se mantiene, y asi sucederá siempre cuando tengamos valores cargados y el campo cambie de nombre y vuelva nuevamente al anterior, si solo cambia 1vez y no regresamos al nombre anterior estos valores no se mantendrán.
+
+INSERT INTO servicios (nombre,precio,nuevonombre) VALUES ('Peinado',100,'Hola');
+
+-Asique despues de insertar valor y verlo en tabla ejecutando: SELECT * FROM servicios; regresamos al nombre del campo "descripcion" nuevamente.
+
+ALTER TABLE servicios CHANGE nuevonombre descripcion VARCHAR(11) NOT NULL;
+
+-Y controlamos el cambio:SELECT * FROM servicios;
+ 
+-Veremos como eliminar un campo, en este caso se lo haremos a "descripcion". Espeficiamos la sintaxis:
+
+ALTER TABLE servicios DROP COLUMN descripcion;
+
+-Y controlamos el cambio:SELECT * FROM servicios;
+
+-----------------------------------------------------
+AGREGAR TABLAS/ELIMINARLAS 
+
+-Podemos tener multiples tablas en nuestro proyecto, se conoce que aproximadamente podremos tener hasta 1 millon de ellas, donde el problema no es la cantidad sino el servidor a donde montarlas, ya que será necesario tener uno muy bueno para mantener la optimizacion de tu sistema. Veremos como podemos crear varias de ellas. Ademas iremos definiendo la dbo definitiva para conectar con el práctico anterior (appsalon).
+
+-Ejecutamos el sgte comando que nos mostrará cuantas tablas tenemos creadas.
+
+SHOW TABLES;
+
++--------------------+
+| Tables_in_appsalon |
++--------------------+
+| servicios          |
++--------------------+
+
+-Y la sentencia para eliminar tablas entonces es la sgte:
+
+DROP TABLE servicios;
+
+-Controlamos si existe mediante nuevamente la sentencia: SHOW TABLES; y aparecera Empty set (0.00 sec) que indica como sabemos que no hay dato.
+
+-Ahora crearemos nuevamente la tabla "servicios", sintaxis:
+
+CREATE TABLE servicios (
+id INT(11) NOT NULL AUTO_INCREMENT,
+nombre VARCHAR(60) NOT NULL,
+precio DECIMAL(6,2) NOT NULL,
+PRIMARY KEY (id)
+);
+
+-Verificamos que se haya creado la tabla: SHOW TABLES;
+-Verificamos la estructura de la tabla: DESCRIBE servicios;
+-Crearemos una 2da tabla, "reservaciones" ingresando la siguiente sintaxis:
+
+CREATE TABLE reservaciones (
+id INT(11) NOT NULL AUTO_INCREMENT,
+nombre VARCHAR(60) NOT NULL,
+apellido VARCHAR(60) NOT NULL,
+hora TIME DEFAULT NULL,
+fecha DATE DEFAULT NULL,
+servicios VARCHAR(255) NOT NULL,
+PRIMARY KEY (id)
+);
+
+Aclaraciones: Como vemos nombre y apellido son tipo VARCHAR(60), para 60 caracteres. Si bien puede que no existan nombres tan alrgos es recomendable crearlos de esa longitud en todos los proyuectos, de todas formas el sistema no usará los 60 si no los requiere, osea usará unicamente los caracteres que le sean ingresados y no los espacios vacios. No hará lo mismo la variable CHAR por eso se recomienda mas esta aunque la otra sea mas pequeña en bites.
+Además, añadimos el tipo de dato TIME & DATE, que se definen como DEFAULT (hora/fecha en el que es creado) o tambien se le puede asignar una hora/fecha en particular, seguido del valor NULL.
+
+-Verificamos que haya sido creada: SHOW TABLES;
+
+-Ahora copiaremos y pegaremos un "Gist" (9.1 Enlace al Gist); que es una copia de todos los registros de servicios que usaremos en el practico de appsalon. Aparece como enlace en la carpeta del práctico actual nº 15 (SQL - Comandos SQL que debes Conocer y operaciones CRUD).
+
+-OJO ese enlace esta cambiado, buscando el Gist de Github pude encontrar el archivo en el shte enlace:
+https://gist.github.com/codigoconjuan/13cd6c6e5bf39a3ccff369242ea0a235
+
+-Entonces de ese Gist copiamos y pegamos los INTO realizados a reservaciones y a servicios.
+
+-Dejare de todas formas en la carpeta del practico el enlace nuevo y  lo que contiene ese Gist, por si se actualiza la ruta o se elimina tener esos datos aqui:
+
+INSERT INTO reservaciones (nombre, apellido, hora, fecha, servicios) VALUES
+        ('Juan', 'De la torre', '10:30:00', '2021-06-28', 'Corte de Cabello Adulto, Corte de Barba' ),
+        ('Antonio', 'Hernandez', '14:00:00', '2021-07-30', 'Corte de Cabello Niño'),
+        ('Pedro', 'Juarez', '20:00:00', '2021-06-25', 'Corte de Cabello Adulto'),
+        ('Mireya', 'Perez', '19:00:00', '2021-06-25', 'Peinado Mujer'),
+        ('Jose', 'Castillo', '14:00:00', '2021-07-30', 'Peinado Hombre'),
+        ('Maria', 'Diaz', '14:30:00', '2021-06-25', 'Tinte'),
+        ('Clara', 'Duran', '10:00:00', '2021-07-01', 'Uñas, Tinte, Corte de Cabello Mujer'),
+        ('Miriam', 'Ibañez', '09:00:00', '2021-07-01', 'Tinte'),
+        ('Samuel', 'Reyes', '10:00:00', '2021-07-02', 'Tratamiento Capilar'),
+        ('Joaquin', 'Muñoz', '19:00:00', '2021-06-28', 'Tratamiento Capilar'),
+        ('Julia', 'Lopez', '08:00:00', '2021-06-25', 'Tinte'),
+        ('Carmen', 'Ruiz', '20:00:00', '2021-07-01', 'Uñas'),
+        ('Isaac', 'Sala', '09:00:00', '2021-07-30', 'Corte de Cabello Adulto'),
+        ('Ana', 'Preciado', '14:30:00', '2021-06-28', 'Corte de Cabello Mujer'),
+        ('Sergio', 'Iglesias', '10:00:00', '2021-07-02', 'Corte de Cabello Adulto'),
+        ('Aina', 'Acosta', '14:00:00', '2021-07-30', 'Uñas'),
+        ('Carlos', 'Ortiz', '20:00:00', '2021-06-25', 'Corte de Cabello Niño'),
+        ('Roberto', 'Serrano', '10:00:00', '2021-07-30', 'Corte de Cabello Niño'),
+        ('Carlota', 'Perez', '14:00:00', '2021-07-01', 'Uñas'),
+        ('Ana Maria', 'Igleias', '14:00:00', '2021-07-02', 'Uñas, Tinte'),
+        ('Jaime', 'Jimenez', '14:00:00', '2021-07-01', 'Corte de Cabello Niño'),
+        ('Roberto', 'Torres', '10:00:00', '2021-07-02', 'Corte de Cabello Adulto'),
+        ('Juan', 'Cano', '09:00:00', '2021-07-02', 'Corte de Cabello Niño'),
+        ('Santiago', 'Hernandez', '19:00:00', '2021-06-28', 'Corte de Cabello Niño'),
+        ('Berta', 'Gomez', '09:00:00', '2021-07-01', 'Uñas'),
+        ('Miriam', 'Dominguez', '19:00:00', '2021-06-28', 'Corte de Cabello Niño'),
+        ('Antonio', 'Castro', '14:30:00', '2021-07-02', 'Corte de Cabello Adulti'),
+        ('Hugo', 'Alonso', '09:00:00', '2021-06-28', 'Corte de Barba'),
+        ('Victoria', 'Perez', '10:00:00', '2021-07-02', 'Uñas, Tinte'),
+        ('Jimena', 'Leon', '10:30:00', '2021-07-30', 'Uñas, Corte de Cabello Mujer'),
+        ('Raquel' ,'Peña', '20:30:00', '2021-06-25', 'Corte de Cabello Mujer');
+
+-----------------------------------------------------------------------------------------
+
+INSERT INTO servicios ( nombre, precio ) VALUES
+        ('Corte de Cabello Niño', 60),
+        ('Corte de Cabello Hombre', 80),
+        ('Corte de Barba', 60),
+        ('Peinado Mujer', 80),
+        ('Peinado Hombre', 60),
+        ('Tinte',300),
+        ('Uñas', 400),
+        ('Lavado de Cabello', 50),
+        ('Tratamiento Capilar', 150);
+
+-----------------------------------------------------------------------------------------
+
+-Ahora verificamos para ver los datos cargados en servicios: SELECT * FROM servicios;
+-Ahora verificamos para ver los datos cargados en reservaciones: SELECT * FROM reservaciones;
+
+(SELECCIONAR SERVICIOS POR RANGOS (en este caso precios))
+
+-Cuando vemos en las tiendas que podemos filtrar entre rangos de precios minimo y maximo para poder gastar esa misma teoría aplicaremos acá. Entre que rangos de precios estan los servicios disponibles en esta dbo. Veremos varios de estos:
+
+-Verificamos que nos muestre servicios con precio mayor a $90.
+
+SELECT * FROM servicios WHERE precio > 90;
++----+---------------------+--------+
+| id | nombre              | precio |
++----+---------------------+--------+
+|  6 | Tinte               | 300.00 |
+|  7 | Uñas                | 400.00 |
+|  9 | Tratamiento Capilar | 150.00 |
++----+---------------------+--------+
+3 rows in set (0.09 sec)
+
+-Verificamos que traiga servicios con precio mayor o igual a $80.
+
+SELECT * FROM servicios WHERE precio >= 80;
+
++----+-------------------------+--------+
+| id | nombre                  | precio |
++----+-------------------------+--------+
+|  2 | Corte de Cabello Hombre |  80.00 |
+|  4 | Peinado Mujer           |  80.00 |
+|  6 | Tinte                   | 300.00 |
+|  7 | Uñas                    | 400.00 |
+|  9 | Tratamiento Capilar     | 150.00 |
++----+-------------------------+--------+
+5 rows in set (0.00 sec)
+
+-Aplicamos sin ejemplificar, ya que con la misma lógica podemos aplicar usando estos operadores:
+SELECT * FROM servicios WHERE precio < 80;
+SELECT * FROM servicios WHERE precio = 80;
+
+-Ahora si, para ver precios en un rango especificado es de la sgte forma:
+
+SELECT * FROM servicios WHERE precio BETWEEN 100 AND 200;
+
++----+---------------------+--------+
+| id | nombre              | precio |
++----+---------------------+--------+
+|  9 | Tratamiento Capilar | 150.00 |
++----+---------------------+--------+
+
+-----------------------------------------------------------
+
+(FUNCIONES AGREGADORAS (SELECTORES))
+
+-Se llama asi a la funcion sgte que sirve para mostrar/contabilizar valores cargados de nuestra dbo en base a algun valor en especifico. Es decir, veremos cuantos id (que son reservas, cada una) por dia tenemos.
+
+-Primero mostraremos la tabla reservaciones: SELECT * FROM reservaciones;
+
+-Ahora enviamos la sgte sintaxis. Aclaracion, veremos que no tiene comas al finalizar cada renglon y es porque en realidad COUNT(id) la tiene al inicio pero todo lo demas es una sola instruccion, solo le damos enter para organizarla mejor en la pantalla.
+
+SELECT COUNT(id), fecha
+FROM reservaciones
+GROUP BY fecha
+ORDER BY COUNT(id) DESC;
+
++-----------+------------+
+| COUNT(id) | fecha      |
++-----------+------------+
+|         7 | 2021-07-02 |
+|         6 | 2021-06-28 |
+|         6 | 2021-07-30 |
+|         6 | 2021-06-25 |
+|         6 | 2021-07-01 |
++-----------+------------+
+
+-Ahora aplicaremos otra funcion agregadora de SQL llamada SUM pero a servicios. Lo que realiza esta es "sumar" todos los valores que estan en el campo "precio"; seguido por "AS" que es un alias, esto seria un campo virtual o temporal (que existirá solo para servir en esa devolucion del dato, la sumatoria en este caso), osea no existe en la definicion de nuestra dbo.
+
+SELECT SUM(precio) AS totalServicios FROM servicios;
+
++----------------+
+| totalServicios |
++----------------+
+|        1240.00 |
++----------------+
+1 row in set (0.03 sec)
+
+-Crearemos otra funcion que mostrará el menor precio/valor, al que se le asignará un alias (este campo virtual/temporal), y que aplicará la tabla "servicios":
+
+SELECT MIN(precio) AS precioMenor FROM servicios;
+
++-------------+
+| precioMenor |
++-------------+
+|       50.00 |
++-------------+
+
+-Y para conocer el maximo valor:
+
+SELECT MAX(precio) AS precioMayor FROM servicios;
+
++-------------+
+| precioMayor |
++-------------+
+|      400.00 |
++-------------+
+----------------------------------------------------------
+
+(BUSCAR INFORMACION EN LA DBO)
+
+-Buscaremos definiendo SELECT, la tabla y un campo determinado medainte la sentencia LIKE y entre comillas la cadena a buscar + %. De esa manera obtendremos todos los resultados que encuentre de la dbo. Explicamos cada caso donde segun la posicion del % buscará de forma distinta:
+	Corte% : (Porcentaje al final de la palabra)- Buscará la palabra "Corte" en 1º palabra de cada registro.
+	%Corte : (Porcentaje al principio de la palabra)- Buscará la palabra "Corte" en al ultimo de las palabras de cada registro.
+	%Corte% : (Porcentaje al principio, al final o en algun lugar de la palabra, es decir en toda la cadena)- Buscará la palabra "Corte" en cualquier posision de todas las palabras del registro.
+
+Ejemplo de cada caso:
+
+SELECT * FROM servicios WHERE nombre LIKE 'Corte%';
+
++----+-------------------------+--------+
+| id | nombre                  | precio |
++----+-------------------------+--------+
+|  1 | Corte de Cabello Niño   |  60.00 |
+|  2 | Corte de Cabello Hombre |  80.00 |
+|  3 | Corte de Barba          |  60.00 |
++----+-------------------------+--------+
+
+SELECT * FROM servicios WHERE nombre LIKE '%Corte';
+Empty set (0.00 sec) (OSEA NO HAY REGISTRO)
+
+
+SELECT * FROM servicios WHERE nombre LIKE '%Cabello%';
+
++----+-------------------------+--------+
+| id | nombre                  | precio |
++----+-------------------------+--------+
+|  1 | Corte de Cabello Niño   |  60.00 |
+|  2 | Corte de Cabello Hombre |  80.00 |
+|  8 | Lavado de Cabello       |  50.00 |
++----+-------------------------+--------+
+
+Aclaracion: No respecta mayu/minusculas en la palabra de la busqueda tampoco.
+
+-------------------------------------------------------
+
+(CONCATENAR)
+- Uniremos 2 columnas para entregar/mostrar un resultado. De esta manera medainte CONCAT, especificando los campos separados y asignando un campo virtual indicando tambien el campo desde donde traeremos el resultado. Se aplica la sgte sentencia.
+
+SELECT CONCAT (nombre,' ',apellido) AS nombreCompleto FROM reservaciones;
+
++--------------------+
+| Juan De la torre   |
+| Antonio Hernandez  |
+| Pedro Juarez       |
+| Mireya Perez       |
+| Jose Castillo      |
+| Maria Diaz         |
+| Clara Duran        |
+| Miriam Ibañez      |
+| Samuel Reyes       |
+| Joaquin Muñoz      |
+| Julia Lopez        |
+| Carmen Ruiz        |
+| Isaac Sala         |
+| Ana Preciado       |
+| Sergio Iglesias    |
+| Aina Acosta        |
+| Carlos Ortiz       |
+| Roberto Serrano    |
+| Carlota Perez      |
+| Ana Maria Igleias  |
+| Jaime Jimenez      |
+| Roberto Torres     |
+| Juan Cano          |
+| Santiago Hernandez |
+| Berta Gomez        |
+| Miriam Dominguez   |
+| Antonio Castro     |
+| Hugo Alonso        |
+| Victoria Perez     |
+| Jimena Leon        |
+| Raquel Peña        |
++--------------------+
+
+-Ahora, para traeremos los mismos campos concatenados, se aplica este metodo CONCAT + el método LIKE donde filtraremos por un valor en especifico. Podremos ver como unimos Ejemplificamos la sentencia:
+
+SELECT * FROM reservaciones
+WHERE CONCAT(nombre,' ',apellido) LIKE '%Ana Preciado%';
+
++----+--------+----------+----------+------------+------------------------+
+| id | nombre | apellido | hora     | fecha      | servicios              |
++----+--------+----------+----------+------------+------------------------+
+| 14 | Ana    | Preciado | 14:30:00 | 2021-06-28 | Corte de Cabello Mujer |
++----+--------+----------+----------+------------+------------------------+
+
+-Veremos que trae varios campos aparte de nombre, apellido y la busqueda del nombre completo. Pero para mostrar valores definidos como la hora, fecha y nombre completo es de la sgte forma:
+
+SELECT hora, fecha, CONCAT(nombre,' ', apellido) as 'Nombre Completo'
+FROM reservaciones
+WHERE CONCAT(nombre,' ',apellido)
+LIKE '%Ana Preciado%';
+
++----------+------------+-----------------+
+| hora     | fecha      | Nombre Completo |
++----------+------------+-----------------+
+| 14:30:00 | 2021-06-28 | Ana Preciado    |
++----------+------------+-----------------+
+
+(REVISAR MULTIPLES CONDICIONES)
+-Mostraremos 2 reservaciones distintas. Si pusieramos SELECT * FROM reservaciones WHERE id = 1, 3; eso da error ya que WHERE espera solo un valor. Para que acepte  o mas usamos "IN".
+
+SELECT * FROM reservaciones WHERE id IN(1,3);
+
++----+--------+-------------+----------+------------+-----------------------------------------+
+| id | nombre | apellido    | hora     | fecha      | servicios                               |
++----+--------+-------------+----------+------------+-----------------------------------------+
+|  1 | Juan   | De la torre | 10:30:00 | 2021-06-28 | Corte de Cabello Adulto, Corte de Barba |
+|  3 | Pedro  | Juarez      | 20:00:00 | 2021-06-25 | Corte de Cabello Adulto                 |
++----+--------+-------------+----------+------------+-----------------------------------------+
+
+-Ahora buscaremos todas las reservaciones de una fecha en particular. Primero para verlo msotraremos las fechas existentes de las requeridas.
+
+SELECT * FROM reservaciones WHERE fecha ='2021/06/28';
+
++----+----------+-------------+----------+------------+-----------------------------------------+
+| id | nombre   | apellido    | hora     | fecha      | servicios                               |
++----+----------+-------------+----------+------------+-----------------------------------------+
+|  1 | Juan     | De la torre | 10:30:00 | 2021-06-28 | Corte de Cabello Adulto, Corte de Barba |
+| 10 | Joaquin  | Muñoz       | 19:00:00 | 2021-06-28 | Tratamiento Capilar                     |
+| 14 | Ana      | Preciado    | 14:30:00 | 2021-06-28 | Corte de Cabello Mujer                  |
+| 24 | Santiago | Hernandez   | 19:00:00 | 2021-06-28 | Corte de Cabello Niño                   |
+| 26 | Miriam   | Dominguez   | 19:00:00 | 2021-06-28 | Corte de Cabello Niño                   |
+| 28 | Hugo     | Alonso      | 09:00:00 | 2021-06-28 | Corte de Barba                          |
++----+----------+-------------+----------+------------+-----------------------------------------+
+
+-Luego buscaremos de las fechas obtenidas una, en este caso. La de id = 1. Para ello se usa "AND".
+
+SELECT * FROM reservaciones WHERE fecha ='2021/06/28' AND id = 1;
+
++----+--------+-------------+----------+------------+-----------------------------------------+
+| id | nombre | apellido    | hora     | fecha      | servicios                               |
++----+--------+-------------+----------+------------+-----------------------------------------+
+|  1 | Juan   | De la torre | 10:30:00 | 2021-06-28 | Corte de Cabello Adulto, Corte de Barba |
++----+--------+-------------+----------+------------+-----------------------------------------+
+
+-Para traer mas de un id en este caso el id = 1 / 10, es añadiendo AND & IN:
+
+SELECT * FROM reservaciones WHERE fecha ='2021/06/28' AND id IN(1,10);
+
++----+---------+-------------+----------+------------+-----------------------------------------+
+| id | nombre  | apellido    | hora     | fecha      | servicios                               |
++----+---------+-------------+----------+------------+-----------------------------------------+
+|  1 | Juan    | De la torre | 10:30:00 | 2021-06-28 | Corte de Cabello Adulto, Corte de Barba |
+| 10 | Joaquin | Muñoz       | 19:00:00 | 2021-06-28 | Tratamiento Capilar                     |
++----+---------+-------------+----------+------------+-----------------------------------------+
+
+-Y para traer de un id especifico con fecha especifica los campos de nombre especifico tambien, de la sgte manera:
+
+SELECT * FROM reservaciones WHERE fecha ='2021/06/28' AND id = 1 AND nombre ='Juan';
+
++----+--------+-------------+----------+------------+-----------------------------------------+
+| id | nombre | apellido    | hora     | fecha      | servicios                               |
++----+--------+-------------+----------+------------+-----------------------------------------+
+|  1 | Juan   | De la torre | 10:30:00 | 2021-06-28 | Corte de Cabello Adulto, Corte de Barba |
++----+--------+-------------+----------+------------+-----------------------------------------+
+
+-----------------------------------------------------
+
+-Damos por finalizado el curso nº15 (SQL - Comandos SQL que debes Conocer y operaciones CRUD). 
+-Aclaramos que el siguiente práctico nº16 BASES DE DATOS - Reglas de Normalización o Formas Normales es de solo videos, por lo que dejaremos los temas tratados unicamente, no se aplican casos prácticos en el.
+
+ 
+nº 16 BASES DE DATOS - Reglas de Normalización o Formas Normales
+
+Temas: 
+1. Primera Regla - 1NF
+2. Segunda Regla - 2NF
+3. Tercer Regla - 3NF
+4. Denormalización
+
+-En el práctico nº17 (SQL INTERMEDIO - Aplicando Normalización y otros temas) si dejaremos otro block de notas donde seguiremos con la práctica en dbo.
+
+
+
