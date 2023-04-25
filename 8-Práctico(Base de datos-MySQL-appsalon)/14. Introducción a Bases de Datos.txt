@@ -1,0 +1,41 @@
+14. Introducción a Bases de Datos
+
+PASO 1 (+aclaraciones)
+-Respecto a este práctico donde cambiamos la forma de programar en dbo. No usaremos phhmyAdmin para crear la tabla sino que lo haremos directamente usando PowerShell para enviar comandos e instalaremos MySql 5.7.30 de Windows.
+
+Especificaciones: (Windows (x86, 32-bit), MSI Installer	Apr 14, 2020	504.8M (version mas pesada).
+Ruta: https://downloads.mysql.com/archives/installer/
+
+-Aclaramos que en la PC ya tenemos MySQL/MariaDB.
+
+Datos adicionales que explican que tenemos en PC: 
+-MySQL/MariaDB: conMySQL, XAMPP cuenta con uno de los sistemas relacionales de gestión de bases de datos más populares del mundo. En combinación con el servidor web Apache y el lenguaje PHP, MySQL sirve para el almacenamiento de datos para servicios web. En las versiones actuales de XAMPP esta base de datos se ha sustituido por MariaDB, una ramificación (“Fork”) del proyecto MySQL.
+
+--------------------------------------------------
+
+PASO 2 
+- Bajamos el instalador y lo pegamos en la carpeta C: directamente. Desde alli realizaremos la instalacion
+-De la ventana de instalacion elegimos Custom y elegimos las opciones e instalamos los sgtes productos:
+
+MySQL Server 5.7.30
+MySQL Shell 8.0.20
+MySQL for Visual Studio 1.2.9 (a ese lo elegi yo)
+
+-Seleccionamos luego entre 2 opciones (Standalone MySQL Server/Classic MySQL Replication o SandBox InnoDB, que seria como de prueba). Elegiremos la version completa que es la 1º. Y luego elegimos la version de desarrollo (Development Computer). Ademas aparecera el Puerto, a elegir. Por defecto aparece 3306 (pero como en mi caso esta usandolo XAMPP) pondre el 3308. Ya que vi que se usa tambien para usarlo en forma de tener que reemplazarlo/usar otro. ç
+Fuente del dato:https://byspel.com/como-cambiar-el-puerto-de-mysql-en-xampp-3306-de-forma-facil/
+
+-Despues cargamos la clave (MySQL Root Password) + repeat. Y pondremos de clave en ambos casos la clave "root".
+-Dejamos el nombre de MySQL Server Windows como: MySQL57
+-Por ultimo: Excecute (ejecutar), luego Finish.
+
+----------------------------------------------------
+
+PASO 3
+-Por ultimo se nos abrira una ventana negra donde alli mandaremos las sentencias para utilizar nuestra DBO. Ruta:(C:Program File\MySQL Shell 8.0\bin\mysqlsh.exe).
+-ACLARACION: Tambien podemos abrirlo buscando en la lupa de Win como "Servicios" (ejecutarlo como administrador) y se nos abre una ventana donde aparecera MySQL57, click derecho y damos a "Iniciar".
+
+-Tambien podemos abrir PowerShell, escribimos PowerShell en la lupa de Win y ahi le pasamos las sentencias.
+-Crearemos otro block de notas "15. SQL - Comandos SQL que debes Conocer y operaciones CRUD", aqui iremos comentando que es lo que va crealizando en dicho práctico.
+
+
+
