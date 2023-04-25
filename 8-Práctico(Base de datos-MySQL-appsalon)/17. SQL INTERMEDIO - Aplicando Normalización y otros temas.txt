@@ -1,0 +1,361 @@
+17. SQL INTERMEDIO - Aplicando Normalización y otros temas
+
+ACLARACIONES: Aqui realizaremos todo lo que aplicaremos para realizar el curso. 
+Complemento del block : 14. Introducción a Bases de Datos
+			15. SQL - Comandos SQL que debes Conocer y operaciones CRUD
+
+------------------------------------------------------------------------------------------------------------------------
+
+-Crearemos mas tablas de manera que podamos utilizar de forma correcta lo aprendido anteriormente aplicando los fundamentos de 1NF/2NK/3NF y Descentralizacion. 
+-Podremos observar que en la tabla reservaciones aparecen mas de un servicio por cliente en algunos casos (Ej: Corte de Cabello Adulto, Corte de Barba).
+-Si se diera el caso que alguno de los clientes pidieran mas de una cita el id se duplicaria por lo que será necesario separar los datos de nombre/apellido de reservaciones y hacer una de "clientes".
+-Lo mismo se debiera aplicar para separar fecha/hora de reservaciones, llamada citas.
+
+(Cardinalidad y Diagramas ER): Lo explica en el 1er video del práctico, en resumen es la relacion que puede tener una tabla con otras (cardinalidad) y como vimos en la facultad cada tabla tiene un atributos/clave primaria PK y algunas la llave forania FK, que es una llave primaria de otra tabla (diagramas entidad/relacion).
+
+-Aclarado esto comenzaremos creando eliminando la tabla reservaciones:
+DROP TABLE reservaciones;
+
+-Ahora crearemos las tablas con las que trabajaremos: Clientes/Citas/CitasServicios(tabla pivot). Recordemos que la tabla Servicios ya estaba creada y estaba correcta.
+
+-Comenzamos con la de clientes:
+
+CREATE TABLE clientes (
+id INT(11) NOT NULL AUTO_INCREMENT,
+nombre VARCHAR(60) NOT NULL,
+apellido VARCHAR(60) NOT NULL,
+telefono VARCHAR(10) NOT NULL,
+email VARCHAR(30) NOT NULL UNIQUE,
+PRIMARY KEY (id)
+);
+
+ *Veremos que "email" tiene UNIQUE, y se utiliza para indicar que el valor que contenga será único y ninguno de los otros clientes puede repetir ese email.Como sucede con Facebook por ejemplo donde si intentamos crear una cuenta con un mail que ya tiene cuenta, nos indicará que no es posible crear y que cambiemos de email para hacerlo.
+
+-Controlamos que este creado correctamente:
+
+ SHOW TABLES;
++--------------------+
+| Tables_in_appsalon |
++--------------------+
+| clientes           |
+| servicios          |
++--------------------+
+
+-Cargaremos un cliente en la tabla creada "clientes":
+
+INSERT INTO clientes (nombre,apellido,telefono,email) 
+VALUES ('Mauricio Rueben','Banega','3515553131','correo@correo.com');
+
+-Consultamos para visualizar la carga:
+
+SELECT * FROM clientes;
++----+-----------------+----------+------------+-------------------+
+| id | nombre          | apellido | telefono   | email             |
++----+-----------------+----------+------------+-------------------+
+|  1 | Mauricio Rueben | Banega   | 3515553131 | correo@correo.com |
++----+-----------------+----------+------------+-------------------+
+
+(RELACIONAR 2 TABLAS)
+-Ahora  como indica el titulo relacionaremos la tabla clientes con la de citas que pasaremos a crear:
+
+CREATE TABLE citas (
+id INT(11) NOT NULL AUTO_INCREMENT,
+fecha DATE NOT NULL,
+hora TIME NOT NULL,
+clienteId INT(11) NOT NULL,
+PRIMARY KEY (id),
+KEY clienteId (clienteId),
+CONSTRAINT cliente_FK
+FOREIGN KEY (clienteId)
+REFERENCES clientes (id)
+);
+
+*Aclaraciones: 
+-Para crear la relacion sabemos que la PK/FK existe una relacion y la misma en su declaracion debe ser el mismo tipo de dato. En este caso como clienteId es en realidad el id de "clientes", ambos deber ser INT(11). 
+-Explicamos cada sentencia que antes no habiamos usado:
+KEY:Alli creamos una "llave" que sera la llave foranea posteriormente de nuestra tabla y el mismo valor entre parentesis.
+CONSTRAINT:Es un limite del cual le asignamos un nombre, en este caso será cliente_FK. Ese limite entra en accion cuando por ejemplo queremos cargar datos a un id que aun no existe, por poner un ejemplo. 
+ Apartir de esta sentencia todo lo siguiente va en la misma declaracion, sin coma entre ellos.
+FOREIGN KEY: Alli va la columna de nuestra tabla, la que será la llave foranea "clienteId".
+REFERENCES: Aqui por ultimo pasamos el dato de con cual tabla se establecerá la relacion y entre parentesis el campo. En este caso sera tabla clientes de campo (id).
+
+-Ahora, verificamos si creo la tabla "citas":
+
+SHOW TABLES;
++--------------------+
+| Tables_in_appsalon |
++--------------------+
+| citas              |
+| clientes           |
+| servicios          |
++--------------------+
+-Y veremos los campos cargados en la tabla creada "citas":
+
+DESCRIBE citas;
+
++-----------+---------+------+-----+---------+----------------+
+| Field     | Type    | Null | Key | Default | Extra          |
++-----------+---------+------+-----+---------+----------------+
+| id        | int(11) | NO   | PRI | NULL    | auto_increment |
+| fecha     | date    | NO   |     | NULL    |                |
+| hora      | time    | NO   |     | NULL    |                |
+| clienteId | int(11) | NO   | MUL | NULL    |                |
++-----------+---------+------+-----+---------+----------------+
+
+-Ahora como vemos, en citas tenemos una fecha/hora/clienteId, entonces cargaremos estos datos al cliente que esta cargado. Ese cliente es solo el que cargue de mi, de id=1 osea no existe un id=2. Por lo que si intentamos cargar a ese id dará error.
+-Pero si cargamos/insertamos una cita con el id valido 1 si lo creará.
+
+INSERT INTO citas (fecha, hora, clienteId)
+VALUES ('2021-06-28','10:30:00','1');
+
+-Verificamos ambas tablas para verificar el id en clientes y clientesId en clientes.
+
+ SELECT * FROM clientes;
++----+-----------------+----------+------------+-------------------+
+| id | nombre          | apellido | telefono   | email             |
++----+-----------------+----------+------------+-------------------+
+|  1 | Mauricio Rueben | Banega   | 3515553131 | correo@correo.com |
++----+-----------------+----------+------------+-------------------+
+
+SELECT * FROM citas;
++----+------------+----------+-----------+
+| id | fecha      | hora     | clienteId |
++----+------------+----------+-----------+
+|  1 | 2021-06-28 | 10:30:00 |         1 |
++----+------------+----------+-----------+
+
+(UNIR 2 TABLAS EN LA MISMA CONSULTA)
+-De esta manera ya tenemos la relacion entre estas dos tablas, pero como se pueden unir los valores de ambas tablas? Si, lo realizamos mediante la sentencia JOIN. Existen varios JOINS pero trabajaremos la mayoria del tiempo con uno que es INNER JOIN. Los demás los veremos mas adelante.
+
+SELECT * FROM citas
+INNER JOIN clientes ON clientes.id = citas.clienteId;
+
+-Especificamos la tabla que recibe la relacion, en este caso citas, ya que clientes no se relaciona directamente sino que citas recibe la relacion de este (atravez de clienteId).
+-Luego escribimos INNER JOIN y la tabla de la que queremos unir la informacion "clientes", luego ON indicando cuales de la dos tablas son las columnas que estan relacionadas, especificando de cada tabla, la tabla+punto+columna, igualando ambas.
+-Y obtendremos ambas tablas juntas.
++----+------------+----------+-----------+----+-----------------+----------+------------+-------------------+
+| id | fecha      | hora     | clienteId | id | nombre          | apellido | telefono   | email             |
++----+------------+----------+-----------+----+-----------------+----------+------------+-------------------+
+|  1 | 2021-06-28 | 10:30:00 |         1 |  1 | Mauricio Rueben | Banega   | 3515553131 | correo@correo.com |
++----+------------+----------+-----------+----+-----------------+----------+------------+-------------------+
+
+-Como vimos ponemos tener distintos tipos de JOINS: INNER/LEFT/RIGHT. Para explicar estos ultimos 2 añadimos un registro mas a la tabla clientes.
+
+INSERT INTO clientes (nombre, telefono,apellido, email)
+VALUES ('Karen','Perez','1093011391','correo2@correo.com');
+
+-Controlamos clientes/citas: 
+
+SELECT * FROM clientes;
++----+-----------------+------------+------------+--------------------+
+| id | nombre          | apellido   | telefono   | email              |
++----+-----------------+------------+------------+--------------------+
+|  1 | Mauricio Rueben | Banega     | 3515553131 | correo@correo.com  |
+|  2 | Karen           | 1093011391 | Perez      | correo2@correo.com |
++----+-----------------+------------+------------+--------------------+
+
+SELECT * FROM citas;
++----+------------+----------+-----------+
+| id | fecha      | hora     | clienteId |
++----+------------+----------+-----------+
+|  1 | 2021-06-28 | 10:30:00 |         1 |
++----+------------+----------+-----------+
+
+-Veremos que trae si hacemos INNER o LEFT JOIN:
+
+SELECT * FROM citas INNER JOIN clientes ON clientes.id = citas.clienteId;
++----+------------+----------+-----------+----+-----------------+----------+------------+-------------------+
+| id | fecha      | hora     | clienteId | id | nombre          | apellido | telefono   | email             |
++----+------------+----------+-----------+----+-----------------+----------+------------+-------------------+
+|  1 | 2021-06-28 | 10:30:00 |         1 |  1 | Mauricio Rueben | Banega   | 3515553131 | correo@correo.com |
++----+------------+----------+-----------+----+-----------------+----------+------------+-------------------+
+
+-Trae el dato del cliente de id=1 y no el de id=2 que es Karen, esto es porque Karen de id=2 no tiene clienteId mientras que id=1 si, clienteId=1 y por eso lo muestra.
+-Esto sucede porque INNER y LEFT JOIN traen todos los registros de la 1er tabla que tengas, en este caso citas, seria el lado A (SELECT * FROM citas) y luego el lado B clientes (INNER JOIN clientes...)
+-Mientras que RIGHT trae el registro al revez, primero el lado B y luego el A.
+
+(CREAMOS UNA TABLA PIVOTE)
+-Esta tabla que crearemos llamada pivote "citasServicios" tendrá como relacion de muchos a muchos ya que recibirá de citas/servicios y cada uno puede tener uno o mas valores de cada uno.
+-Se le llama pivote ya que solo contendrá id de citas y de servicios, pero tendrá su id propio. Usualmente este tipo de tablas se nombran uniendo el nombre de ambas tablas a las cuales une.
+
+CREATE TABLE citasServicios (
+id INT(11) AUTO_INCREMENT,
+citaId INT(11) NOT NULL,
+servicioId INT(11) NOT NULL,
+PRIMARY KEY (id),
+KEY citaId (citaId),
+CONSTRAINT citas_FK
+FOREIGN KEY (citaId)
+REFERENCES citas (id),
+KEY servicioId (servicioId),
+CONSTRAINT servicios_FK
+FOREIGN KEY (servicioId)
+REFERENCES servicios(id)
+);
+ 
+-Chekeamos las tablas aver si creo correctamente "citasServicios":
+
+SHOW TABLES;
++--------------------+
+| Tables_in_appsalon |
++--------------------+
+| citas              |
+| citasservicios     |
+| clientes           |
+| servicios          |
++--------------------+
+
+-Verifiquemos la estructura: 
+DESCRIBE citasServicios;
+
++------------+---------+------+-----+---------+----------------+
+| Field      | Type    | Null | Key | Default | Extra          |
++------------+---------+------+-----+---------+----------------+
+| id         | int(11) | NO   | PRI | NULL    | auto_increment |
+| citaId     | int(11) | NO   | MUL | NULL    |                |
+| servicioId | int(11) | NO   | MUL | NULL    |                |
++------------+---------+------+-----+---------+----------------+
+
+-Ahora insertaremos valores en esta nueva tabla, recordamos que tenemos que cargar valores admitidos. Asi lo especificamos mediante el CONSTRAINT. Pero antes mostraremos ambas tablas nuevamente para visualizar.
+
+SELECT * FROM citas;
++----+------------+----------+-----------+
+| id | fecha      | hora     | clienteId |
++----+------------+----------+-----------+
+|  1 | 2021-06-28 | 10:30:00 |         1 |
++----+------------+----------+-----------+
+
+SELECT * FROM servicios;
++----+-------------------------+--------+
+| id | nombre                  | precio |
++----+-------------------------+--------+
+|  1 | Corte de Cabello Niño   |  60.00 |
+|  2 | Corte de Cabello Hombre |  80.00 |
+|  3 | Corte de Barba          |  60.00 |
+|  4 | Peinado Mujer           |  80.00 |
+|  5 | Peinado Hombre          |  60.00 |
+|  6 | Tinte                   | 300.00 |
+|  7 | Uñas                    | 400.00 |
+|  8 | Lavado de Cabello       |  50.00 |
+|  9 | Tratamiento Capilar     | 150.00 |
++----+-------------------------+--------+
+
+-Añadiremos un INSERT en la nueva tabla, uniendo el valor del id de cada tabla, citas y servicios.
+
+INSERT INTO citasServicios (citaId, servicioId) VALUES (1,8);
+
+-Consultamos aver si se creo la tabla correctamente:
+
+SELECT * FROM citasServicios;
+
++----+--------+------------+
+| id | citaId | servicioId |
++----+--------+------------+
+|  2 |      1 |          8 |
++----+--------+------------+
+
+(CONSULTAR LA INFORMACIÓN DE LA TABLA PIVOTE)
+-Veremos como mostrar los valores de las anteriores 2 tablas mas esta de citasServicios, osea mostrar 3 tablas.
+
+SELECT * FROM citasServicios
+LEFT JOIN citas ON citas.id = citasServicios.citaId
+LEFT JOIN servicios ON servicios.id = citasServicios.servicioId;
+
++----+--------+------------+------+------------+----------+-----------+------+-------------------+--------+
+| id | citaId | servicioId | id   | fecha      | hora     | clienteId | id   | nombre            | precio |
++----+--------+------------+------+------------+----------+-----------+------+-------------------+--------+
+|  2 |      1 |          8 |    1 | 2021-06-28 | 10:30:00 |         1 |    8 | Lavado de Cabello |  50.00 |
++----+--------+------------+------+------------+----------+-----------+------+-------------------+--------+
+
+-Ahora añadiremos mas servicios a la unica cita creada de id=1, para la tabla pivote citasServicios:
+
+INSERT INTO citasServicios (citaId,servicioId) VALUES (1,3);
+
+INSERT INTO citasServicios (citaId,servicioId) VALUES (1,4);
+
+-Ahora aplicamos para ver como queda la tabla "citasServicios":
+
+SELECT * FROM citasServicios;
++----+--------+------------+
+| id | citaId | servicioId |
++----+--------+------------+
+|  2 |      1 |          8 |
+|  3 |      1 |          3 |
+|  4 |      1 |          4 |
++----+--------+------------+
+
+-Uniremos nuevamente consultando mediante la tabla pivote, igual a como hicimos arriba obteneniendo el registro de estos nuevos servicios cargados:
+
+SELECT * FROM citasServicios
+LEFT JOIN citas ON citas.id = citasServicios.citaId
+LEFT JOIN servicios ON servicios.id = citasServicios.servicioId;
+
++----+--------+------------+------+------------+----------+-----------+------+-------------------+--------+
+| id | citaId | servicioId | id   | fecha      | hora     | clienteId | id   | nombre            | precio |
++----+--------+------------+------+------------+----------+-----------+------+-------------------+--------+
+|  2 |      1 |          8 |    1 | 2021-06-28 | 10:30:00 |         1 |    8 | Lavado de Cabello |  50.00 |
+|  3 |      1 |          3 |    1 | 2021-06-28 | 10:30:00 |         1 |    3 | Corte de Barba    |  60.00 |
+|  4 |      1 |          4 |    1 | 2021-06-28 | 10:30:00 |         1 |    4 | Peinado Mujer     |  80.00 |
++----+--------+------------+------+------------+----------+-----------+------+-------------------+--------+
+
+-Entonces, como sabemos cual es el nombre y apellido del cliente que realizo todos estos servicios en la cita solicitada. Solo tenemos como infromacion que es un cliente de id=1 (clienteId=1). Veremos a continuacion como traer ese dato.
+
+(MÚLTIPLES JOINS Y MÁS SOBRE BD)
+
+-Explicaremos como traer estas 3 tablas, mas la de cliente (donde aparece el dato del cliente que solicita el servicio) y no solo veamos un id de el.
+-Esto lo realizamos tambien mediante JOIN. Con el podemos obtener todas las tablas que necesitemos ver.
+
+SELECT * FROM citasServicios
+LEFT JOIN citas ON citas.Id = citasServicios.citaId
+LEFT JOIN clientes ON citas.clienteId = clientes.id
+LEFT JOIN servicios ON servicios.id = citasServicios.servicioId;
+
++----+--------+------------+------+------------+----------+-----------+------+-----------------+----------+------------+-------------------+------+-------------------+--------+
+| id | citaId | servicioId | id   | fecha      | hora     | clienteId | id   | nombre          | apellido | telefono   | email             | id   | nombre            | precio |
++----+--------+------------+------+------------+----------+-----------+------+-----------------+----------+------------+-------------------+------+-------------------+--------+
+|  2 |      1 |          8 |    1 | 2021-06-28 | 10:30:00 |         1 |    1 | Mauricio Rueben | Banega   | 3515553131 | correo@correo.com |    8 | Lavado de Cabello |  50.00 |
+|  3 |      1 |          3 |    1 | 2021-06-28 | 10:30:00 |         1 |    1 | Mauricio Rueben | Banega   | 3515553131 | correo@correo.com |    3 | Corte de Barba    |  60.00 |
+|  4 |      1 |          4 |    1 | 2021-06-28 | 10:30:00 |         1 |    1 | Mauricio Rueben | Banega   | 3515553131 | correo@correo.com |    4 | Peinado Mujer     |  80.00 |
++----+--------+------------+------+------------+----------+-----------+------+-----------------+----------+------------+-------------------+------+-------------------+--------+
+
+(Expandir block de notas para verlo mas claramente)
+
+-Y listo, ahora tenemos el JOIN tambien de clientes. 
+-Definiendo, podemos traer multiples tablas mediante LEFT JOIN. Lo importante es que esten relacionadas, que exista esa relacion por medio del CONSTRAINT y que se haya definido la FK (y que sea la clave PK de otra tabla).
+
+----------------------------------------------------------
+
+Breve explicacion: Existen multiples bases de datos
+
+-Base de datos RELACIONALES: 
+
+Microsoft SQL Server
+Oracle
+Microsoft Access
+MySQL
+MariaDB
+SAP Hana
+SQLite
+
+-Bases de datos de Escritorio:
+Access
+Filemaker Pro
+
+-Bases de datos Empresariales:
+SQL Server
+Oracle
+SAP Hana
+
+Cada BD se utiliza para una solucion en especifico:
+-MongoDB para transacciones bancarias y BigData.
+-MySQL y SQL Server para sitios y aplicaciones web.
+-SQLite para aplicaciones móviles.
+
+
+(FIN DEL CURSO)
+
+
+
+
+
+
