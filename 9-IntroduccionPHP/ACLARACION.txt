@@ -1,0 +1,3 @@
+-Dejo indicado que lo viste en el práctico 18. Introducción a PHP que indica sobre la instacion de PHP no lo aplique. Debido a que ya tengo en uso XAMPP y ejecuto el compilador de VSC.
+
+-Y complementario; no instalo las extenciones que recomienda en el video. En todo caso de ser necesario hacerlo se instalaran. estas se indican en el 1º video del práctico actual 19. PHP - Sintaxis, Funciones y Mucho más.
