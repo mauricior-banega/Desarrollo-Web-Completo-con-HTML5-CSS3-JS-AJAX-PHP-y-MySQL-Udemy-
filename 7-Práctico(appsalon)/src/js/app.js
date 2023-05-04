@@ -132,14 +132,35 @@ function cambiarSeccion()
 async function mostrarServicios()
 {
     try {
-        const resultado = await fetch ('./servicios.json');
-        const db = await resultado.json();
 
-        const { servicios } = db;
+        /* const resultado = await fetch ('./servicios.json'); */
+
+        //Pasos para quitar el fetch de "servicios.json" y hacerlo al archivo PHP "servicios.php" que contiene la dbo final.
+
+        //1º Creamos la URL a donde apuntará el fetch para obtener la dbo obtenida de servicios.php. La copiamos del navegador.
+        //Aclaracion: Funciona unicamente abriendo el index con PHP y copiando/pegando la ruta de acceso. Es decir click derecho en el index y seleccionamos PHP Server -Open file in browser. Abre la localhost:3000
+
+        //Tambien funciona con el localhost de XAMPP que es la ruta de url3 que tambien probé conectar, pero dejaremos la url.
+
+        const url = 'http://localhost:3000/23-Desarrollo%20Web%20Completo%20con%20HTML5,%20CSS3,%20JS%20AJAX%20PHP%20y%20MySQL%20(Udemy)/Desarrollo-Web-Completo-con-HTML5-CSS3-JS-AJAX-PHP-y-MySQL-Udemy-/7-Pr%C3%A1ctico(appsalon)/servicios.php'; 
+
+        /* Ruta si se abre desde con Live Server y no funciona, se prueba.
+        const url2 = 'http://127.0.0.1:5500/23-Desarrollo%20Web%20Completo%20con%20HTML5,%20CSS3,%20JS%20AJAX%20PHP%20y%20MySQL%20(Udemy)/Desarrollo-Web-Completo-con-HTML5-CSS3-JS-AJAX-PHP-y-MySQL-Udemy-/7-Pr%C3%A1ctico(appsalon)/servicios.php'; */
+
+        /* const url3 = 'http://localhost/Estudios/23-Desarrollo%20Web%20Completo%20con%20HTML5,%20CSS3,%20JS%20AJAX%20PHP%20y%20MySQL%20(Udemy)/Desarrollo-Web-Completo-con-HTML5-CSS3-JS-AJAX-PHP-y-MySQL-Udemy-/7-Pr%c3%a1ctico(appsalon)/servicios.php'; */
+
+        const resultado = await fetch (url); //Guarda la ruta del archivo servicios.php
+
+        const db = await resultado.json(); //Guarda la conversion a json de servicios.php
+
+        console.log(db); 
+        /* const { servicios } = db; 
+        -2º Quitamos este Destructuring de servicios que era el nombre del array que teniamos en JS "servicios.json" que simulaba ser la dbo.*/
         
         //Generar el HTML: Creamos una variable nueva que alojará cada valor de "servicios" por el que va a ir iterando.
 
-        servicios.forEach( servicio => {
+        //-3º Por ultimo, el forEach se hará a $db que es quien aloja la ruta correcta y de la conversion a json.
+        db.forEach( servicio => {
 
             const { id, nombre, precio } = servicio; //Destructuring nuevamente: Creamos 3 variables que alojarán los valores en c/u de ellas.
             
