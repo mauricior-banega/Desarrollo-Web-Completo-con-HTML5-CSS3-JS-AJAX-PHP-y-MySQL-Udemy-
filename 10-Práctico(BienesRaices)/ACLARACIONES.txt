@@ -1,0 +1,37 @@
+-En cada práctico dejaremos constancia de los errores ocurridos en cuanto a utilizar node y gulp en este paso.
+
+-Aplicando todos los pasos descritos tambien en ACLARACIONES del práctico (appsalon) para evitar los errores, cabe aclarar que siguen y eso es porque debe de comentarse en gulpfile los require de const imagemin que no funciona hoy en dia, ademas del atajo de esa misma instruccion por defecto que ejecutamos mediante "gulp", y por ultimo cosnt sass tambien debe ser cambiada. Dejare ejemplos de esto y lo explicado en el práctico anterior.
+
+/* const sass = require('gulp-sass'); */
+const sass = require('gulp-sass')(require('sass')); //Asi debe generarse la variable de sass, como arriba no.
+
+//const imagemin = require('gulp-imagemin'); Se desactiva este require que hoy no funciona
+
+Y al ultimo...
+
+exports.default = parallel(css, javascript,  /* imagenes */ versionWebp, watchArchivos ); 
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+-Y resumiendo indica ejecutar comando de actualizacion de estas dependencias (explicacion+pasos): 
+
+Es tan sencillo como editar el archivo package.json y escribir las versiones actualizadas de cada dependencia. Obviamente, es muy tedioso y te va a tomar mucho tiempo. Así que mejor, abre la terminal y escribe:
+
+npm i -g npm-check-updates
+Con eso instalarás globalmente el paquete npm-check-updates que leerá tu archivo package.json comparará las versiones con los repositorios de npm y te indicará qué paquetes deben ser actualizados. Una vez instalado, puedes hacer lo siguiente:
+
+npm-check-updates -u
+O en su versión corta
+
+ncu -u
+
+Lo que actualizará las versiones de las dependencias en tu archivo package.json. Ahora solo ejecuta npm install sin problemas.
+
+4-Tener en cuenta algo muy importante, cuando abrimos un práctico este tiene ya un nombre declarado e instalaciones ya realziadas. Sucederá que cuando enviemos el comando "npm i o install" creará todo pero con el nombre creado por el que hizo el curso y que será diferente al nuestro y dará error en todas las instalaciones practicamente. Ademas como lo explicado arriba, puede que estas dependencias no esten actualizadas. Entonces tendra que ser cambiado el "name" que será en este caso (7-Práctico(appsalon) en package.json & package-lock.json. Y no el que estaba que era "practico sass salon" o algo asi.
+
+5-Tambien dio error al ejecutar gulp, indicaba que faltaba sass (No se puede encontrar el módulo 'sass' o Error: Cannot find module 'sass'). Se solucionó mediante la instalacion global o de desarrollo: 
+
+npm i -g sass (globalmente)
+npm i sass --save-dev (local o en zona)
+

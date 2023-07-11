@@ -1,0 +1,60 @@
+/* -En caso que el navegador no soporte webp, adjuntamos sintaxis de clase ".no-webp". Ademas la clase en la que se aplicará la imagen de fondo, en este caso ".inicio". Y declaramos que se carguen sino es posible las imagenes "webp" las "jpg". 
+ -Pero si es soportado, lo declarado en ".webp .inicio".
+
+ -Esta clase de webp & no-webp no esta declarada como tal en el HTML pero al agregar el script de Modernizer en el HTML, este agrega al HTML una clase de ese tipo a todo el documento, de manera que si la podemos usar en el y en este caso si añadimos otra clase que seria "inicio" este actuará como selector aplicando la propiedad a esa parte del documento. Podremos ver esto si inspeccionamos y vemos en el codigo como si se añade esta clase al HTML ejecutado.
+*/
+
+
+/* 1-Por alguna razon, luego de llegar a la clase 25. BIENES RAICES no funciona el Modernizer de manera que no se ejecuta. por esta razon es que no se activa el .webp / .no-webp
+como clase y por ello no trae las imagenes. Por eso cargare directamente la imagen webp de build.
+
+.no-webp .inicio {
+    background-image: url(../img/header.jpg);
+}
+
+.webp .inicio {
+    background-image: url(../img/header.webp);
+    
+} */
+
+.inicio { //1
+    background-image: url(../img/header.webp);  
+}
+
+.header {
+    background-color: $grisOscuro;
+    padding: 1rem 0 3rem 0;
+
+    &.inicio {
+
+        background-position: center center;
+        background-size: cover;
+
+        @include tablet {
+            min-height: 70rem;
+        }
+
+        .contenido-header {
+            
+            @include tablet {
+                min-height: 70rem;
+            }
+        }
+    }
+
+}
+
+
+.contenido-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    h1 {
+        text-align: left;
+        color: $blanco;
+        font-weight: $bold;
+        line-height: 2;
+        max-width: 60rem; /* Para no crear un <br> en el HTML (no recomendable) de salto de linea y mandar abajo el texto, le damos un ancho maximo, y si sobra manda lo que falte debajo. */
+    }
+}

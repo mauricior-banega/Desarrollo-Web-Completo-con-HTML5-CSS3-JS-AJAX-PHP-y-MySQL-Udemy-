@@ -1,0 +1,57 @@
+7 Etapas para construir un sitio web
+
+1-Pre-proceso:
+
+-Se define quien esta a cargo de que parte del proyecto. El cliente es parte del equipo. El cliente comaprte su visión y el equipo la lleva a cabo.
+
+-Algunos roles (el freelancer puede diferir o no tener algunos de estos): 
+Creador de contenido | Arquitectura de la Información | Pruebas | Diseño Gráfico | Diseñador UI y UX | FrontEnd | Backend | Supervisor de Testing.
+
+
+2-Estrategia de Contenido:
+
+-Planeación, desarrollo y administracion de una página web. Con la planeacion adecuada tendrás un panorama más claro del proyecto. Aqui se definen planes de contenido. Aún no se ven colores o tecnologías utilizadas.
+
+
+Importancia: El contenido es lo más importante del sitio web. Definimos que es lo mas importante para nuestros visitantes. Definimos a quien queremos llegar y quines son. En esta etapa auditamos imágenes, videos, textos, como se relaciona el contenido uno con otro. Al finalizar la auditoria, diseño ya sabrá con que cuenta y debe crear.
+
+Etapas: 
+--Modelado de Contenido: Una vez que sabemos que contenido hay listo podemos modelarlo.
+*Creamos un sitio web para una empresa de bienes raíces, por lo tanto querimos una sección de información, contacto, anuncios. Los anuncios tendrán un titulo, precio, descripcion, imagen, etc. Es importante "modelar" cómo deberá mostrarse el contenido.
+--Jerarquia: Nos ayudará a definir:
+*Que páginas son las mas importantes o principales. 
+*Que páginas son soporte a otras páginas.
+*Que páginas complementan el contenido existente.
+(Una vez finalizada esta etapa, Diseño ya comienza a construit los diseños).
+--Arquitectura de la información: Es el como se organizan los diferentes componentes del sitio web y como los usuarios navegarán por las diferentes secciones a fin de interactuar en el. Ej: como se relaciona los anuncios de propiedades en venta con la seccion de inicio y/o blog de la página.
+--Wireframing: Piensalo como un plano de un sitio web. Ssolo va a mostrar como debe verse sin definir aun los colores, fuentes, imágenes, solo donde se ubucarán los elementos. En el, podemos realizar anotaciones, comentarios, etc.
+
+
+
+3-Etapa de Pre-construcción:
+
+-En esta etapa se realiza un serien de Wireframes y se va definiento de que seccion a que seccion será la navegacion del sitio web.
+
+-Al tener una serie de Wireframes podemos identificar el flujo que tendrá el sitio web. Tambien, que necesitamos (imágenes, videos, logos y secciones) tendrá que diseñar UX en caso que se requieran/falten.
+Finalmente en este etapa definimos como será posible ir visitando las otras secciones internas.
+
+
+4-Estapa de Construcción:
+
+-En esta etapa se comienza a crear el sitio web o aplicaciín. También, ya se trabaja sobre un diseño, ademas que tanto FrontEnd como BackEnd comienzan a trabajar.
+
+Importante: No cometer el error de que las atras UX/UI |Frontend|Backend no tengan comunicacion e igual ritmo de trabajo, todas las areas deben realizarse en simulataneo, iniciar y terminar todas a la vez.
+
+(Hasta aqui dejaremos, ya que crearemos el proyecto de bienes raices al que aplicaremos los siguientes pasos al finalizarlo hasta esta etapa de construcción).
+
+
+
+
+
+
+5-Pruebas y Revision
+6-Etapa de Optimizacion
+7-Lanzamiento
+
+
+

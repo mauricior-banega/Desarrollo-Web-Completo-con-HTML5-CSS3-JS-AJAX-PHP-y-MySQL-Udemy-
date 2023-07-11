@@ -1,0 +1,102 @@
+
+.derecha {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+
+    @include tablet {
+        align-items: flex-end;
+    }
+}
+
+.dark-mode-boton {
+    width: 3rem;
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+    filter: invert(100%); //Como el svg de la "luna" es color negra, filter cambia las propiedades de las imagenes. Invert (invierte) el color, y el contrario seria blanco y le damos el 100%.
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    @include tablet {
+        margin-top: 0;
+    }
+}
+
+.barra {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    //align-items: flex-end; -Movemos a "include tablet"
+    padding-top: 3rem;
+
+    @include tablet {
+        flex-direction: row;
+        justify-content: space-between;
+
+        align-items: flex-end;
+    }
+}
+
+.navegacion {
+
+    /* display: none; (1) */
+    visibility: hidden;
+    opacity: 0;
+    height: 0;
+    transition: visibility .3s ease-in-out, opacity 0.5s linear, height .5s linear;
+
+    @include tablet {
+        display: flex;
+        align-items: center;
+        opacity: 1;
+        visibility: visible;
+    }
+
+    a {
+        color: $blanco;
+        text-decoration: none;
+        font-size: 2.2rem;
+        display: block;
+        text-align: center;
+
+        @include tablet {
+            margin-right: 2rem;
+            font-size: 1.8rem;
+
+            &:last-of-type { /* Eliminamos el margen al ultimo elemento (Contacto) */
+                margin-right: 0;
+            }
+        }
+
+    }
+}
+
+/* **Menu de Hamburguesa** */
+.mobile-menu {
+    @include tablet {
+        display: none;
+    }
+    img {
+        width: 5rem;
+    }
+}
+
+.mostrar {
+
+    /* (1)-Debido a que los displays no se pueden animar, reemplazaremos estas declaraciones por la propiedad "visibility" al cual ocultaremos/mostraremos. Ademas una transicion a ella.
+
+    display: flex;
+    flex-direction: column;
+
+    @include tablet {
+        flex-direction: row;
+    } 
+    */
+
+    visibility: visible;
+    opacity: 1;
+    height: auto;
+}

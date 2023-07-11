@@ -1,0 +1,24 @@
+Aclaraciones sobre el práctico 23. BIENES RAICES - Configuración y Bases de Datos del Proyecto
+
+|INSTALAMOS MYSQL WORKBECH|
+-Sirve para modelar una dbo y crear y para ver como se van a relacionar entre ellas.
+-Desde aqui crearemos la dbo para el práctico de bienes raices. Se elije la conexión o Local Instance "MySQL57", con puerto 3308 y clave: root. El no,bre de la dbo es "bienes_raices".
+-En ella crearemos tablas y relaciones entre ellas para agregar a la pagina ya creada del práctico anterior.
+
+-Dejo el enlace de la descarga realizada:
+https://www.mysql.com/products/workbench/
+
+-Y se instaló correctamente en nuestra PC.
+
+**Otros datos**
+Version de MySQL Workbench: 8.0.33
+-Se cambia a la 5.7.24 porque da error en la instalacion como lo hace en el video.
+
+-Se ejecuto correctamente el Forward Enginner de Database en MySQL Workbench (veo práctico donde se aplican todos los pasos en caso de ser necesario).
+
+
+-------------------------------------------------------
+
+Para poder visualizar los datos creados de la dbo, si bien se puede usar Workbench usaremos una que se llama "TablePlus".
+
+Enlace: https://tableplus.com/
