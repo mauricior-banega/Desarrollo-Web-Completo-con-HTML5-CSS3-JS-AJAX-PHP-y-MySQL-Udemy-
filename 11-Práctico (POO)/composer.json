@@ -1,0 +1,16 @@
+{
+    "name": "yamil/11-practico_poo",
+    "description": "Aprendiendo Namespaces y Autoload",
+    "authors": [
+        {
+            "name": "Mauricio",
+            "email": "correo@correo.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "App\\" : "./clases"
+        }
+    }
+}
