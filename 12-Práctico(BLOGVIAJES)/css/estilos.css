@@ -1,0 +1,44 @@
+
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif ;
+}
+
+img {
+    max-width: 100%;
+}
+
+.site-header {
+    padding:20px 0;
+
+}
+
+.contenedor {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Navegacion */
+
+.barra {
+    background-color: #db008d;
+}
+
+.navegacion-principal a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 22px;
+    display: block;
+    text-align: center;
+    padding: 20px;
+}
+
+@media(min-width:768px){
+    .navegacion-principal a {
+        display: inline-block;
+        
+    }
+}
+
+.navegacion-principal a:hover {
+    background-color: #00b8e4;
+}
